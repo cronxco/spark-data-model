@@ -9,13 +9,13 @@ class DataModelServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../config/DataModel.php' => config_path('DataModel.php'),
+            __DIR__.'/../config/datamodel.php' => config_path('datamodel.php'),
         ], 'DataModel');
     }
 
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/DataModel.php', 'DataModel');
+        $this->mergeConfigFrom(__DIR__.'/../config/datamodel.php', 'datamodel');
 
         $this->registerMigrations();
 
