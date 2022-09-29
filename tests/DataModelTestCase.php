@@ -3,10 +3,10 @@
 namespace Tests;
 
 use Orchestra\Testbench\TestCase;
-use Maslauskas\EventStore\EventStoreFacade;
-use Maslauskas\EventStore\EventStoreServiceProvider;
+use CronxCo\DataModel\DataModelFacade;
+use CronxCo\DataModel\DataModelServiceProvider;
 
-abstract class EventStoreTestCase extends TestCase
+abstract class DataModelTestCase extends TestCase
 {
     /**
      * Setup the test environment.
@@ -24,7 +24,7 @@ abstract class EventStoreTestCase extends TestCase
      */
     protected function getPackageProviders($app)
     {
-        return [EventStoreServiceProvider::class];
+        return [DataModelServiceProvider::class];
     }
 
     /**
@@ -34,7 +34,7 @@ abstract class EventStoreTestCase extends TestCase
     protected function getPackageAliases($app)
     {
         return [
-            'EventStore' => EventStoreFacade::class,
+            'DataModel' => DataModelFacade::class,
         ];
     }
 
@@ -46,10 +46,10 @@ abstract class EventStoreTestCase extends TestCase
      */
     protected function getEnvironmentSetUp($app)
     {
-        $app['config']->set('database.default', 'eventstore');
-        $app['config']->set('eventstore.connection', 'eventstore');
+        $app['config']->set('database.default', 'DataModel');
+        $app['config']->set('DataModel.connection', 'DataModel');
 
-        $app['config']->set('database.connections.eventstore', [
+        $app['config']->set('database.connections.DataModel', [
             'driver'   => 'sqlite',
             'database' => ':memory:',
             'prefix'   => '',
@@ -58,7 +58,7 @@ abstract class EventStoreTestCase extends TestCase
 
     public function addDedicatedTablesToConfig()
     {
-        $this->app['config']->set('eventstore.streams', [
+        $this->app['config']->set('DataModel.streams', [
             'custom_event_table' => [
                 'custom_event_1',
                 'custom_event_2',

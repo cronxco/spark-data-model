@@ -1,25 +1,25 @@
 <?php
 
-namespace Maslauskas\EventStore;
+namespace CronxCo\DataModel;
 
 use Illuminate\Support\ServiceProvider;
 
-class EventStoreServiceProvider extends ServiceProvider
+class DataModelServiceProvider extends ServiceProvider
 {
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../config/eventstore.php' => config_path('eventstore.php'),
-        ], 'eventstore');
+            __DIR__.'/../config/DataModel.php' => config_path('DataModel.php'),
+        ], 'DataModel');
     }
 
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/eventstore.php', 'eventstore');
+        $this->mergeConfigFrom(__DIR__.'/../config/DataModel.php', 'DataModel');
 
         $this->registerMigrations();
 
-        $this->app->singleton('EventStore', function () {
+        $this->app->singleton('DataModel', function () {
             return new Store;
         });
     }
@@ -30,6 +30,6 @@ class EventStoreServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),
-        ], 'eventstore-migrations');
+        ], 'DataModel-migrations');
     }
 }

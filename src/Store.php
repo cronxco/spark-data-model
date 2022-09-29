@@ -1,6 +1,6 @@
 <?php
 
-namespace Maslauskas\EventStore;
+namespace CronxCo\DataModel;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -19,7 +19,7 @@ class Store
      */
     public function __construct()
     {
-        $this->withExceptions = config('eventstore.throw_exceptions');
+        $this->withExceptions = config('DataModel.throw_exceptions');
     }
 
     /**
@@ -161,8 +161,8 @@ class Store
      */
     public function createStreamTable($table)
     {
-        DB::connection(config('eventstore.connection'))->transaction(function () use ($table) {
-            $schema = Schema::connection(config('eventstore.connection'));
+        DB::connection(config('DataModel.connection'))->transaction(function () use ($table) {
+            $schema = Schema::connection(config('DataModel.connection'));
 
             $schema->create($table, function (Blueprint $builder) {
                 $builder->bigIncrements('event_id')->index();

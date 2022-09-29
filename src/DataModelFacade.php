@@ -1,16 +1,16 @@
 <?php
 
-namespace Maslauskas\EventStore;
+namespace CronxCo\DataModel;
 
 use Illuminate\Support\Facades\Facade;
 
-class EventStoreFacade extends Facade
+class DataModelFacade extends Facade
 {
     /**
      * @return string
      */
     protected static function getFacadeAccessor()
     {
-        return 'EventStore';
+        return 'DataModel';
     }
 }

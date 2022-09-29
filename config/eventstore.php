@@ -2,9 +2,9 @@
 
 return [
 
-    'connection' => env('EVENT_STORE_CONNECTION', config('database.default')),
+    'connection' => env('DATA_MODEL_CONNECTION', config('database.default')),
 
-    'table' => env('EVENT_STORE_TABLE', 'event_store'),
+    'table' => env('DATA_MODEL_TABLE', 'data_model'),
 
     'throw_exceptions' => false,
 

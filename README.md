@@ -1,21 +1,19 @@
-# event-store
+# Spark Data Model
 
-Simple EventStore implementation package for Laravel using MySQL.
-
-[![Build Status](https://travis-ci.org/maslauskas/event-store.svg?branch=master)](https://travis-ci.org/maslauskas/event-store) [![Latest Stable Version](https://poser.pugx.org/maslauskas/event-store/v/stable)](https://packagist.org/packages/maslauskas/event-store) [![Total Downloads](https://poser.pugx.org/maslauskas/event-store/downloads)](https://packagist.org/packages/maslauskas/event-store) [![License](https://poser.pugx.org/maslauskas/event-store/license)](https://packagist.org/packages/maslauskas/event-store)
+Simple DataModel implementation package for Laravel using MySQL.
 
 ## Installation
 
 To start using this package, install it with composer:
 
 ```php
-composer require maslauskas/event-store
+composer require CronxCo/data-model
 ```
 
 Publishing config and migrations:
 
 ```
-php artisan vendor:publish --provider=Maslauskas\EventStore\EventStoreServiceProvider
+php artisan vendor:publish --provider=CronxCo\DataModel\DataModelServiceProvider
 ```
 
 This package uses Laravel's package auto-discovery feature, so there is no need to modify your `config/app.php` file.
@@ -33,13 +31,13 @@ First, add a dedicated connection to your `config/database.php` file:
         ...
         */
 
-        'eventstore' => [
+        'DataModel' => [
             'driver' => 'mysql',
-            'host' => env('EVENT_STORE_HOST', 'localhost'),
-            'port' => env('EVENT_STORE_PORT', '3306'),
-            'database' => env('EVENT_STORE_DATABASE', 'event_store'),
-            'username' => env('EVENT_STORE_USERNAME', 'root'),
-            'password' => env('EVENT_STORE_PASSWORD', 'root'),
+            'host' => env('DATA_MODEL_HOST', 'localhost'),
+            'port' => env('DATA_MODEL_PORT', '3306'),
+            'database' => env('DATA_MODEL_DATABASE', 'data_model'),
+            'username' => env('DATA_MODEL_USERNAME', 'root'),
+            'password' => env('DATA_MODEL_PASSWORD', 'root'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
@@ -57,11 +55,11 @@ First, add a dedicated connection to your `config/database.php` file:
 Next, add required environment variables to your `.env` file:
 
 ```env
-EVENT_STORE_CONNECTION="eventstore"
-EVENT_STORE_DATABASE="your_event_store_database_name"
-EVENT_STORE_TABLE="your_event_store_table_name"
-EVENT_STORE_USERNAME="your_event_store_user_name"
-EVENT_STORE_PASSWORD="your_event_store_user_password"
+DATA_MODEL_CONNECTION="DataModel"
+DATA_MODEL_DATABASE="your_data_model_database_name"
+DATA_MODEL_TABLE="your_data_model_table_name"
+DATA_MODEL_USERNAME="your_data_model_user_name"
+DATA_MODEL_PASSWORD="your_data_model_user_password"
 ```
 
 It is recommended to create a separate user for event store database, and remove UPDATE, DELETE, DROP permissions, to make sure your event store is append-only.
@@ -77,22 +75,23 @@ php artisan migrate
 To start logging your events, append this line to your code where you wish the event to be logged:
 
 ```php
-EventStore::add('event_name', $data);
+DataModel::add('event_name', $data);
 ```
 
-Or using the eventstore helper function, which is just a wrapper for the facade:
+Or using the DataModel helper function, which is just a wrapper for the facade:
 
 ```php
-eventstore()->add('event_name', $data);
+DataModel()->add('event_name', $data);
 ```
 
 the `add()` method accepts four arguments:
+
 - `$event_type`: name of your event, e.g. `user_created`, `email_sent`, `order_shipped`, etc.
 - `$payload`: array of values to record. e.g. for `user_created` event, you can pass the array of attributes that this user was created with.
-- `$target_id`: *(optional)* ID of target model in your database. E.g., for `email_sent` event, you can pass `user_id` as `$target_id`. This helps in the future when you wish to fetch all events related to a particular user.
-- `$before`: *(optional)* array of values that were changed. E.g. for `user_updated` event, you may pass `$user->toArray()` to record attributes that were changed and their values before the change. *Note:* the `add()` method automatically filters out only those keys that exist in `$payload` parameter to avoid unnecessary overhead.
+- `$target_id`: _(optional)_ ID of target model in your database. E.g., for `email_sent` event, you can pass `user_id` as `$target_id`. This helps in the future when you wish to fetch all events related to a particular user.
+- `$before`: _(optional)_ array of values that were changed. E.g. for `user_updated` event, you may pass `$user->toArray()` to record attributes that were changed and their values before the change. _Note:_ the `add()` method automatically filters out only those keys that exist in `$payload` parameter to avoid unnecessary overhead.
 
-Sometimes, certain events occur much more frequently than others, e.g. `user_created` and `user_logged_in`. To help with query performance, you can separate certain events to their dedicated tables by changing the `streams` array in `config/eventstore.php` file:
+Sometimes, certain events occur much more frequently than others, e.g. `user_created` and `user_logged_in`. To help with query performance, you can separate certain events to their dedicated tables by changing the `streams` array in `config/DataModel.php` file:
 
 ```php
 'streams' => [
@@ -124,7 +123,7 @@ Sets dedicated table and returns `Illuminate\Database\Eloquent\Builder` instance
 
 ## Exception handling
 
-By default, EventStore suppresses any exceptions that occur during `add()` method call. You can disable this by changing `throw_exceptions` setting in `config/eventstore.php`:
+By default, DataModel suppresses any exceptions that occur during `add()` method call. You can disable this by changing `throw_exceptions` setting in `config/DataModel.php`:
 
 ```php
 'throw_exceptions' => true,
@@ -132,7 +131,7 @@ By default, EventStore suppresses any exceptions that occur during `add()` metho
 
 ## Testing
 
-Run the tests with 
+Run the tests with
 
 ```
 vendor/bin/phpunit

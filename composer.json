@@ -1,38 +1,38 @@
 {
-    "name": "maslauskas/event-store",
-    "description": "Simple event store for Laravel using MySQL",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Tadas Maslauskas",
-            "email": "maslauskas.t@gmail.com"
-        }
-    ],
-    "require": {},
-    "autoload": {
-        "psr-4": {
-            "Maslauskas\\EventStore\\": "src/"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Maslauskas\\EventStore\\EventStoreServiceProvider"
-            ],
-            "aliases": {
-                "EventStore": "Maslauskas\\EventStore\\EventStoreFacade"
-            }
-        }
-    },
-    "require-dev": {
-        "orchestra/testbench": "~3.5"
+  "name": "cronxco/data-model",
+  "description": "Data model for Spark using Laravel and MySQL",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Cronxo Co",
+      "email": "hi@cronx.co"
     }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "CronxCo\\DataModel\\": "src/"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "CronxCo\\DataModel\\DataModelServiceProvider"
+      ],
+      "aliases": {
+        "DataModel": "CronxCo\\DataModel\\DataModelFacade"
+      }
+    }
+  },
+  "require-dev": {
+    "orchestra/testbench": "~3.5"
+  }
 }

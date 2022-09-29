@@ -1,6 +1,6 @@
 <?php
 
-namespace Maslauskas\EventStore;
+namespace CronxCo\DataModel;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
@@ -9,8 +9,8 @@ class StoreEvent extends Model
 {
     public function __construct(array $attributes = [])
     {
-        $this->setConnection(config('eventstore.connection'));
-        $this->setTable(config('eventstore.table'));
+        $this->setConnection(config('DataModel.connection'));
+        $this->setTable(config('DataModel.table'));
 
         parent::__construct($attributes);
     }
@@ -56,10 +56,10 @@ class StoreEvent extends Model
      */
     public function getStream($event)
     {
-        $dedicated_tables = config('eventstore.streams');
+        $dedicated_tables = config('DataModel.streams');
 
         if (empty($dedicated_tables)) {
-            return config('eventstore.table');
+            return config('DataModel.table');
         }
 
         foreach ($dedicated_tables as $table => $events) {
@@ -68,7 +68,7 @@ class StoreEvent extends Model
             }
         }
 
-        return config('eventstore.table');
+        return config('DataModel.table');
     }
 
     /**
@@ -79,8 +79,8 @@ class StoreEvent extends Model
      */
     public function needsDedicatedStreamTableCreation()
     {
-        return $this->getTable() !== config('eventstore.table')
-            && ! Schema::connection(config('eventstore.connection'))->hasTable($this->getTable());
+        return $this->getTable() !== config('DataModel.table')
+            && ! Schema::connection(config('DataModel.connection'))->hasTable($this->getTable());
     }
 
     /**

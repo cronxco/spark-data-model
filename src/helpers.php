@@ -1,8 +1,8 @@
 <?php
 
-if (! function_exists('eventstore')) {
-    function eventstore()
+if (! function_exists('DataModel')) {
+    function DataModel()
     {
-        return app('EventStore');
+        return app('DataModel');
     }
 }

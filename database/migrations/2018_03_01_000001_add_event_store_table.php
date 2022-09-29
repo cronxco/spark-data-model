@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddEventStoreTable extends Migration
+class AddDataModelTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,22 @@ class AddEventStoreTable extends Migration
      */
     public function up()
     {
-        $schema = Schema::connection(config('eventstore.connection'));
+        $schema = Schema::connection(config('datamodel.connection'));
 
-        $schema->create(config('eventstore.table'), function (Blueprint $table) {
+        $schema->create(config('datamodel.table'), function (Blueprint $table) {
             $table->bigIncrements('event_id')->index();
-            $table->string('event_type')->index();
-            $table->unsignedInteger('target_id')->nullable()->index();
-            $table->longText('payload');
-            $table->longText('metadata')->nullable();
+            $table->string('source_uid')->index();
+            $table->string('actor_id')->index();
+            $table->longText('actor_metadata')->nullable();
+            $table->string('event_service')->index();
+            $table->string('event_action')->index();
+            $table->longText('event_payload');
+            $table->longText('event_metadata')->nullable();
+            $table->string('target_id')->index();
+            $table->longText('target_metadata')->nullable();
+            $table->timestamp('event_time')->index();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))->index();
         });
     }
 
@@ -32,8 +39,8 @@ class AddEventStoreTable extends Migration
      */
     public function down()
     {
-        $schema = Schema::connection(config('eventstore.connection'));
+        $schema = Schema::connection(config('datamodel.connection'));
 
-        $schema->dropIfExists(config('eventstore.table'));
+        $schema->dropIfExists(config('datamodel.table'));
     }
 }

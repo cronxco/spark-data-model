@@ -2,36 +2,36 @@
 
 namespace Tests;
 
-use Maslauskas\EventStore\Store;
-use Maslauskas\EventStore\StoreEvent;
-use Maslauskas\EventStore\EventStoreFacade as EventStore;
+use CronxCo\DataModel\Store;
+use CronxCo\DataModel\StoreEvent;
+use CronxCo\DataModel\DataModelFacade as DataModel;
 
-class EventStoreTest extends EventStoreTestCase
+class DataModelTest extends DataModelTestCase
 {
     /** @test */
     public function it_registers_testing_config()
     {
-        $this->assertEquals('eventstore', config('eventstore.connection'));
-        $this->assertEquals('event_store', config('eventstore.table'));
+        $this->assertEquals('DataModel', config('DataModel.connection'));
+        $this->assertEquals('data_model', config('DataModel.table'));
     }
 
     /** @test */
     public function it_migrates_default_tables_to_database()
     {
-        $this->assertDatabaseMissing('event_store', []);
+        $this->assertDatabaseMissing('data_model', []);
     }
 
     /** @test */
     public function it_registers_helper_function()
     {
-        $this->assertInstanceOf(Store::class, eventstore());
+        $this->assertInstanceOf(Store::class, DataModel());
     }
 
     /** @test */
     public function it_adds_event_to_default_events_table()
     {
-        EventStore::withExceptions()->add('some_event', ['key' => 'value']);
-        $this->assertDatabaseHas('event_store', [
+        DataModel::withExceptions()->add('some_event', ['key' => 'value']);
+        $this->assertDatabaseHas('data_model', [
             'event_type' => 'some_event',
             'payload' => json_encode(['key' => 'value']),
         ]);
@@ -60,14 +60,14 @@ class EventStoreTest extends EventStoreTestCase
     {
         $this->addDedicatedTablesToConfig();
 
-        EventStore::withExceptions()->add('custom_event_1', ['key' => 'value']);
+        DataModel::withExceptions()->add('custom_event_1', ['key' => 'value']);
         $this->assertTrue(\Illuminate\Support\Facades\Schema::hasTable('custom_event_table'));
     }
 
     /** @test */
     public function it_does_not_create_custom_table_if_it_already_exists()
     {
-        EventStore::createStreamTable('custom_table');
+        DataModel::createStreamTable('custom_table');
 
         $event = new StoreEvent();
         $event->setTable('custom_table');
@@ -80,7 +80,7 @@ class EventStoreTest extends EventStoreTestCase
     {
         $this->addDedicatedTablesToConfig();
 
-        EventStore::withExceptions()->add('custom_event_1', ['key' => 'value']);
+        DataModel::withExceptions()->add('custom_event_1', ['key' => 'value']);
         $this->assertDatabaseHas('custom_event_table', [
             'event_type' => 'custom_event_1',
             'payload' => json_encode(['key' => 'value']),
@@ -90,13 +90,13 @@ class EventStoreTest extends EventStoreTestCase
     /** @test */
     public function it_inserts_multiple_events_at_once()
     {
-        EventStore::withExceptions()->addMany('some_event', [
+        DataModel::withExceptions()->addMany('some_event', [
             ['key' => 'foo'],
             ['key' => 'bar'],
             ['key' => 'baz'],
         ]);
 
-        $this->assertDatabaseHas('event_store', [
+        $this->assertDatabaseHas('data_model', [
             'event_type' => 'some_event',
             'payload' => json_encode(['key' => 'baz']),
         ]);
@@ -107,7 +107,7 @@ class EventStoreTest extends EventStoreTestCase
     {
         $this->addDedicatedTablesToConfig();
 
-        EventStore::withExceptions()->addMany('custom_event_1', [
+        DataModel::withExceptions()->addMany('custom_event_1', [
             ['key' => 'foo'],
             ['key' => 'bar'],
             ['key' => 'baz'],
