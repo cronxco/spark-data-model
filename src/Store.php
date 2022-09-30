@@ -32,22 +32,18 @@ class Store
     public function add($event, $target_id, $actor_id, $source_uid = null, $target_metadata = null, $actor_metadata = null)
     {
 
-        if (is_null($source_uid)){
-            $source_uid = Str::uuid();
-        }
-
         try {
             $data = new StoreEvent([
                 'event_action' => $event->action,
                 'event_service' => $event->service,
-                'event_payload' => $event->payload,
-                'event_metadata' => $event->metadata,
+                'event_payload' => isset($event->payload)?$event->payload:null,
+                'event_metadata' => isset($event->metadata)?$event->metadata:null,
                 'event_time' => $event->time,
                 'target_id' => $target_id,
                 'target_metadata' => $target_metadata,
                 'actor_id' => $actor_id,
                 'actor_metadata' => $actor_metadata,
-                'source_uid' => $source_uid
+                'source_uid' => is_null($source_uid)?Str::uuid():$source_uid
             ]);
 
             $data->setStream($event->action);
