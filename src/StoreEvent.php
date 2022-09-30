@@ -20,6 +20,8 @@ class StoreEvent extends Model
      */
     public $timestamps = false;
 
+    public $primaryKey = 'event_id';
+
     /**
      * @var array
      */
