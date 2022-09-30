@@ -57,7 +57,7 @@ class QueryTest extends DataModelTestCase
     }
 
     /** @test */
-    public function it_gets_all_events_for_specific_action()
+    public function it_gets_all_events_for_specific_event_action()
     {
         DataModel::withExceptions()->addMany('regular_event', [
             ['key' => 'foo'],
@@ -80,7 +80,7 @@ class QueryTest extends DataModelTestCase
     }
 
     /** @test */
-    public function it_gets_all_events_for_specific_action_with_dedicated_stream()
+    public function it_gets_all_events_for_specific_event_action_with_dedicated_stream()
     {
         $this->addDedicatedTablesToConfig();
 

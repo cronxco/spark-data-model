@@ -23,13 +23,13 @@ class Store
     }
 
     /**
-     * @param      $action
+     * @param      $event_action
      * @param      $payload
      * @param null $target_id
      * @param null $before
      * @throws \Exception
      */
-    public function add($action, $payload, $target_id = null, $before = null)
+    public function add($event_action, $payload, $target_id = null, $before = null)
     {
         if ($before instanceof Model) {
             $before = array_only($before->attributesToArray(), array_keys($payload));
@@ -37,7 +37,7 @@ class Store
 
         try {
             $event = new StoreEvent([
-                'action' => $action,
+                'event_action' => $event_action,
                 'payload' => $payload,
                 'target_id' => $target_id,
             ]);
@@ -46,7 +46,7 @@ class Store
                 $event->metadata = array_merge($event->metadata ?: [], ['before' => $before]);
             }
 
-            $event->setStream($action);
+            $event->setStream($event_action);
 
             if ($event->needsDedicatedStreamTableCreation()) {
                 $this->createStreamTable($event->getTable());
@@ -64,23 +64,23 @@ class Store
      * Add multiple entries of the same event at once using a single query.
      * Disclaimer: this method does not fire any Eloquent model events.
      *
-     * @param       $action
+     * @param       $event_action
      * @param array $events
      * @throws \Exception
      */
-    public function addMany($action, array $events)
+    public function addMany($event_action, array $events)
     {
         try {
             $event = new StoreEvent();
-            $event->setStream($action);
+            $event->setStream($event_action);
 
             if ($event->needsDedicatedStreamTableCreation()) {
                 $this->createStreamTable($event->getTable());
             }
 
-            $events = array_map(function ($e) use ($action) {
+            $events = array_map(function ($e) use ($event_action) {
                 return [
-                    'action' => $action,
+                    'event_action' => $event_action,
                     'payload' => json_encode($e),
                 ];
             }, $events);
@@ -116,7 +116,7 @@ class Store
 
         if ($event) {
             $query->setStream($event);
-            $query = $query->where('action', $event);
+            $query = $query->where('event_action', $event);
         }
 
         return $query->get();
@@ -166,7 +166,7 @@ class Store
 
             $schema->create($table, function (Blueprint $builder) {
                 $builder->bigIncrements('event_id')->index();
-                $builder->string('action')->index();
+                $builder->string('event_action')->index();
                 $builder->unsignedInteger('target_id')->nullable()->index();
                 $builder->longText('payload');
                 $builder->longText('metadata')->nullable();
