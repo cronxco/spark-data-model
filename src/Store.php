@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Str;
 
 class Store
 {
@@ -26,33 +27,32 @@ class Store
      * @param      $event_action
      * @param      $event_payload
      * @param null $target_id
-     * @param null $before
      * @throws \Exception
      */
-    public function add($event_action, $event_payload, $target_id = null, $before = null)
+    public function add($event, $target_id, $actor_id, $source_uid = Str::uuid(), $target_metadata = null, $actor_metadata = null)
     {
-        if ($before instanceof Model) {
-            $before = array_only($before->attributesToArray(), array_keys($event_payload));
-        }
 
         try {
-            $event = new StoreEvent([
-                'event_action' => $event_action,
-                'event_payload' => $event_payload,
+            $data = new StoreEvent([
+                'event_action' => $event->action,
+                'event_service' => $event->service,
+                'event_payload' => $event->payload,
+                'event_metadata' => $event->metadata,
+                'event_time' => $event->time,
                 'target_id' => $target_id,
+                'target_metadata' => $target_metadata,
+                'actor_id' => $actor_id,
+                'actor_metadata' => $actor_metadata,
+                'source_uid' => $source_uid
             ]);
 
-            if ($before) {
-                $event->metadata = array_merge($event->metadata ?: [], ['before' => $before]);
+            $data->setStream($event->action);
+
+            if ($data->needsDedicatedStreamTableCreation()) {
+                $this->createStreamTable($data->getTable());
             }
 
-            $event->setStream($event_action);
-
-            if ($event->needsDedicatedStreamTableCreation()) {
-                $this->createStreamTable($event->getTable());
-            }
-
-            $event->save();
+            $data->save();
         } catch (\Exception $e) {
             if ($this->withExceptions) {
                 throw $e;
@@ -166,12 +166,19 @@ class Store
 
             $schema->create($table, function (Blueprint $builder) {
                 $builder->bigIncrements('event_id')->index();
+                $builder->string('source_uid')->index();
+                $builder->string('actor_id')->index();
+                $builder->longText('actor_metadata')->nullable();
+                $builder->string('event_service')->index();
                 $builder->string('event_action')->index();
-                $builder->unsignedInteger('target_id')->nullable()->index();
                 $builder->longText('event_payload');
-                $builder->longText('metadata')->nullable();
+                $builder->longText('event_metadata')->nullable();
+                $builder->string('target_id')->index();
+                $builder->longText('target_metadata')->nullable();
+                $builder->timestamp('event_time')->index();
                 $builder->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
-            });
+                $builder->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))->index();
+                });
         });
     }
 }

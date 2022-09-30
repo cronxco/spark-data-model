@@ -22,7 +22,7 @@ class AddDataModelTable extends Migration
             $table->longText('actor_metadata')->nullable();
             $table->string('event_service')->index();
             $table->string('event_action')->index();
-            $table->longText('event_payload');
+            $table->longText('event_payload')->nullable();
             $table->longText('event_metadata')->nullable();
             $table->string('target_id')->index();
             $table->longText('target_metadata')->nullable();
