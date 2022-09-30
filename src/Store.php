@@ -34,9 +34,11 @@ class Store
     {
 
         try {
-            $data = new StoreEvent([
+            $data = StoreEvent::updateOrCreate([
+                'source_uid' => is_null($source_uid)?Str::uuid():$source_uid,
                 'event_action' => $event->action,
                 'event_service' => $event->service,
+                ] ,[
                 'event_payload' => isset($event->payload)?$event->payload:null,
                 'event_metadata' => isset($event->metadata)?$event->metadata:null,
                 'event_time' => isset($event->time)?$event->time:Carbon::now()->toDateTimeString(),
@@ -44,7 +46,6 @@ class Store
                 'target_metadata' => $target_metadata,
                 'actor_id' => $actor_id,
                 'actor_metadata' => $actor_metadata,
-                'source_uid' => is_null($source_uid)?Str::uuid():$source_uid
             ]);
 
             $data->setStream($event->action);
