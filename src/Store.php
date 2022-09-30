@@ -19,7 +19,7 @@ class Store
      */
     public function __construct()
     {
-        $this->withExceptions = config('DataModel.throw_exceptions');
+        $this->withExceptions = config('datamodel.throw_exceptions');
     }
 
     /**
@@ -161,8 +161,8 @@ class Store
      */
     public function createStreamTable($table)
     {
-        DB::connection(config('DataModel.connection'))->transaction(function () use ($table) {
-            $schema = Schema::connection(config('DataModel.connection'));
+        DB::connection(config('datamodel.connection'))->transaction(function () use ($table) {
+            $schema = Schema::connection(config('datamodel.connection'));
 
             $schema->create($table, function (Blueprint $builder) {
                 $builder->bigIncrements('event_id')->index();

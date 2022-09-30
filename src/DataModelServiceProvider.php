@@ -10,7 +10,7 @@ class DataModelServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/../config/datamodel.php' => config_path('datamodel.php'),
-        ], 'DataModel');
+        ], 'datamodel');
     }
 
     public function register()
@@ -19,7 +19,7 @@ class DataModelServiceProvider extends ServiceProvider
 
         $this->registerMigrations();
 
-        $this->app->singleton('DataModel', function () {
+        $this->app->singleton('datamodel', function () {
             return new Store;
         });
     }
@@ -30,6 +30,6 @@ class DataModelServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),
-        ], 'DataModel-migrations');
+        ], 'datamodel-migrations');
     }
 }

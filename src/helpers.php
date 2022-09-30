@@ -1,7 +1,7 @@
 <?php
 
-if (! function_exists('DataModel')) {
-    function DataModel()
+if (! function_exists('datamodel')) {
+    function datamodel()
     {
         return app('DataModel');
     }
