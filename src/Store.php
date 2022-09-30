@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class Store
 {
@@ -38,7 +39,7 @@ class Store
                 'event_service' => $event->service,
                 'event_payload' => isset($event->payload)?$event->payload:null,
                 'event_metadata' => isset($event->metadata)?$event->metadata:null,
-                'event_time' => $event->time,
+                'event_time' => isset($event->time)?$event->time:Carbon::now()->toDateTimeString(),
                 'target_id' => $target_id,
                 'target_metadata' => $target_metadata,
                 'actor_id' => $actor_id,
