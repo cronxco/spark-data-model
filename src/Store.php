@@ -32,7 +32,7 @@ class Store
     public function add($event, $target_id, $actor_id, $source_uid = null, $target_metadata = null, $actor_metadata = null)
     {
 
-        if is_null($source_uid){
+        if (is_null($source_uid)){
             $source_uid = Str::uuid();
         }
 
