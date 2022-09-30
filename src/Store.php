@@ -29,8 +29,12 @@ class Store
      * @param null $target_id
      * @throws \Exception
      */
-    public function add($event, $target_id, $actor_id, $source_uid = Str::uuid(), $target_metadata = null, $actor_metadata = null)
+    public function add($event, $target_id, $actor_id, $source_uid = null, $target_metadata = null, $actor_metadata = null)
     {
+
+        if is_null($source_uid){
+            $source_uid = Str::uuid();
+        }
 
         try {
             $data = new StoreEvent([
