@@ -87,9 +87,9 @@ DataModel()->add('event_name', $data);
 the `add()` method accepts four arguments:
 
 - `$event_action`: name of your event, e.g. `user_created`, `email_sent`, `order_shipped`, etc.
-- `$payload`: array of values to record. e.g. for `user_created` event, you can pass the array of attributes that this user was created with.
+- `$event_payload`: array of values to record. e.g. for `user_created` event, you can pass the array of attributes that this user was created with.
 - `$target_id`: _(optional)_ ID of target model in your database. E.g., for `email_sent` event, you can pass `user_id` as `$target_id`. This helps in the future when you wish to fetch all events related to a particular user.
-- `$before`: _(optional)_ array of values that were changed. E.g. for `user_updated` event, you may pass `$user->toArray()` to record attributes that were changed and their values before the change. _Note:_ the `add()` method automatically filters out only those keys that exist in `$payload` parameter to avoid unnecessary overhead.
+- `$before`: _(optional)_ array of values that were changed. E.g. for `user_updated` event, you may pass `$user->toArray()` to record attributes that were changed and their values before the change. _Note:_ the `add()` method automatically filters out only those keys that exist in `$event_payload` parameter to avoid unnecessary overhead.
 
 Sometimes, certain events occur much more frequently than others, e.g. `user_created` and `user_logged_in`. To help with query performance, you can separate certain events to their dedicated tables by changing the `streams` array in `config/DataModel.php` file:
 

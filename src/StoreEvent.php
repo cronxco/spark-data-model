@@ -29,7 +29,7 @@ class StoreEvent extends Model
      * @var array
      */
     protected $casts = [
-        'payload' => 'array',
+        'event_payload' => 'array',
         'metadata' => 'array',
     ];
 

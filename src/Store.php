@@ -24,21 +24,21 @@ class Store
 
     /**
      * @param      $event_action
-     * @param      $payload
+     * @param      $event_payload
      * @param null $target_id
      * @param null $before
      * @throws \Exception
      */
-    public function add($event_action, $payload, $target_id = null, $before = null)
+    public function add($event_action, $event_payload, $target_id = null, $before = null)
     {
         if ($before instanceof Model) {
-            $before = array_only($before->attributesToArray(), array_keys($payload));
+            $before = array_only($before->attributesToArray(), array_keys($event_payload));
         }
 
         try {
             $event = new StoreEvent([
                 'event_action' => $event_action,
-                'payload' => $payload,
+                'event_payload' => $event_payload,
                 'target_id' => $target_id,
             ]);
 
@@ -81,7 +81,7 @@ class Store
             $events = array_map(function ($e) use ($event_action) {
                 return [
                     'event_action' => $event_action,
-                    'payload' => json_encode($e),
+                    'event_payload' => json_encode($e),
                 ];
             }, $events);
 
@@ -168,7 +168,7 @@ class Store
                 $builder->bigIncrements('event_id')->index();
                 $builder->string('event_action')->index();
                 $builder->unsignedInteger('target_id')->nullable()->index();
-                $builder->longText('payload');
+                $builder->longText('event_payload');
                 $builder->longText('metadata')->nullable();
                 $builder->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
             });
