@@ -4,14 +4,11 @@ namespace CronxCo\DataModel;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\ModelStatus\HasStatuses;
 use Spatie\Tags\HasTags;
 
 class StoreEvent extends Model
 {
-    
-    use HasStatuses;
-    use HasTags;
+        use HasTags;
     
     public function __construct(array $attributes = [])
     {
