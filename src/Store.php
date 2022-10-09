@@ -55,6 +55,9 @@ class Store
             }
 
             $data->save();
+
+            return $data;
+
         } catch (\Exception $e) {
             if ($this->withExceptions) {
                 throw $e;
