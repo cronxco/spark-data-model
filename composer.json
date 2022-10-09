@@ -8,7 +8,13 @@
       "email": "hi@cronx.co"
     }
   ],
-  "require": {},
+  "require": {
+    "php": "^8.0",
+    "laravel/framework": "^8.67|^9.0",
+    "spatie/eloquent-sortable": "^3.10|^4.0",
+    "spatie/laravel-model-status": "^1.0",
+    "spatie/laravel-tags": "^4.0"
+  },
   "autoload": {
     "psr-4": {
       "CronxCo\\DataModel\\": "src/"
