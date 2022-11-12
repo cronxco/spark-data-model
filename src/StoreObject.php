@@ -44,7 +44,7 @@ class StoreObject extends Model
 
     public function events()
     {
-        return $this->hasMany(StoreEvent::class);
+        return $this->hasMany(StoreEvent::class, 'object_uid', 'object_uid');
     }
 
     /**
