@@ -37,7 +37,7 @@ class AddDataModelTable extends Migration
             $table->string('event_action')->index();
             $table->longText('event_payload')->nullable();
             $table->json('event_metadata')->nullable();
-            $table->string('object_uid')->index();
+            $table->string('object_uid')->nullable()->index();
             $table->timestamp('event_time')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))->index();
