@@ -13,7 +13,7 @@ class StoreEvent extends Model
     public function __construct(array $attributes = [])
     {
         $this->setConnection(config('datamodel.connection'));
-        $this->setTable(config('datamodel.table'));
+        $this->setTable(config('datamodel.events_table'));
 
         parent::__construct($attributes);
     }
@@ -30,6 +30,8 @@ class StoreEvent extends Model
      */
     protected $guarded = [];
 
+    protected $with = ['object'];
+
     /**
      * @var array
      */
@@ -44,6 +46,12 @@ class StoreEvent extends Model
      * @var array
      */
     protected $dates = ['created_at'];
+
+    public function object()
+    {
+        return $this->belongsTo(StoreObject::class);
+    }
+
 
     /**
      * @param $event
@@ -66,7 +74,7 @@ class StoreEvent extends Model
         $dedicated_tables = config('datamodel.streams');
 
         if (empty($dedicated_tables)) {
-            return config('datamodel.table');
+            return config('datamodel.events_table');
         }
 
         foreach ($dedicated_tables as $table => $events) {
@@ -86,7 +94,7 @@ class StoreEvent extends Model
      */
     public function needsDedicatedStreamTableCreation()
     {
-        return $this->getTable() !== config('datamodel.table')
+        return $this->getTable() !== config('datamodel.events_table')
             && ! Schema::connection(config('datamodel.connection'))->hasTable($this->getTable());
     }
 

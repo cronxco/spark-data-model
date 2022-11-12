@@ -15,8 +15,21 @@ class AddDataModelTable extends Migration
     {
         $schema = Schema::connection(config('datamodel.connection'));
 
-        $schema->create(config('datamodel.table'), function (Blueprint $table) {
-            $table->bigIncrements('event_id')->index();
+        $schema->create(config('datamodel.objects_table'), function (Blueprint $table) {
+            $table->string('object_uid')->primary();
+            $table->string('object_type')->index();
+            $table->string('object_title')->index();
+            $table->longText('object_content')->nullable();
+            $table->longText('object_metadata')->nullable();
+            $table->string('object_url')->nullable();
+            $table->string('object_image_path', 2048)->nullable();
+            $table->timestamp('object_time')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))->index();
+        });
+
+        $schema->create(config('datamodel.events_table'), function (Blueprint $table) {
+            $table->bigIncrements('event_id')->primary();
             $table->string('source_uid')->index();
             $table->string('actor_id')->index();
             $table->longText('actor_metadata')->nullable();
@@ -24,12 +37,13 @@ class AddDataModelTable extends Migration
             $table->string('event_action')->index();
             $table->longText('event_payload')->nullable();
             $table->longText('event_metadata')->nullable();
-            $table->string('target_id')->index();
-            $table->longText('target_metadata')->nullable();
+            $table->string('object_uid')->index();
             $table->timestamp('event_time')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))->index();
+            $table->foreign('object_uid')->references('object_uid')->on(config('datamodel.objects_table'));
         });
+
     }
 
     /**
@@ -41,6 +55,6 @@ class AddDataModelTable extends Migration
     {
         $schema = Schema::connection(config('datamodel.connection'));
 
-        $schema->dropIfExists(config('datamodel.table'));
+        $schema->dropIfExists(config('datamodel.events_table'));
     }
 }

@@ -4,7 +4,8 @@ return [
 
     'connection' => env('DATA_MODEL_CONNECTION', config('database.default')),
 
-    'table' => env('DATA_MODEL_TABLE', 'data_model'),
+    'events_table' => env('DATA_MODEL_EVENTS_TABLE', 'events'),
+    'objects_table' => env('DATA_MODEL_OBJECTS_TABLE', 'objects'),
 
     'throw_exceptions' => false,
 
