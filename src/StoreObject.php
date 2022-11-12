@@ -24,6 +24,8 @@ class StoreObject extends Model
     public $timestamps = false;
 
     public $primaryKey = 'object_uid';
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     /**
      * @var array
