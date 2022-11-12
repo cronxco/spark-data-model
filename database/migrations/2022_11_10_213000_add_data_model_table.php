@@ -20,7 +20,7 @@ class AddDataModelTable extends Migration
             $table->string('object_type')->index();
             $table->string('object_title')->index();
             $table->longText('object_content')->nullable();
-            $table->longText('object_metadata')->nullable();
+            $table->json('object_metadata')->nullable();
             $table->string('object_url')->nullable();
             $table->string('object_image_path', 2048)->nullable();
             $table->timestamp('object_time')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
@@ -32,11 +32,11 @@ class AddDataModelTable extends Migration
             $table->bigIncrements('event_id')->index();
             $table->string('source_uid')->index();
             $table->string('actor_id')->index();
-            $table->longText('actor_metadata')->nullable();
+            $table->json('actor_metadata')->nullable();
             $table->string('event_service')->index();
             $table->string('event_action')->index();
             $table->longText('event_payload')->nullable();
-            $table->longText('event_metadata')->nullable();
+            $table->json('event_metadata')->nullable();
             $table->string('object_uid')->index();
             $table->timestamp('event_time')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->index();

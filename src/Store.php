@@ -61,7 +61,7 @@ class Store
                 'event_time' => isset($event_object->time)?$event_object->time:Carbon::now()->toDateTimeString(),
                 'actor_id' => $actor_object->id,
                 'actor_metadata' => isset($actor_object->metadata)?$actor_object->metadata:null,
-            ]);
+            ])->object()->associate($object);
 
             // Check which table the event should be stored in
 
@@ -70,10 +70,6 @@ class Store
             if ($data->needsDedicatedStreamTableCreation()) {
                 $this->createStreamTable($data->getTable());
             }
-
-            // Associate the object to the event
-
-            $data->object()->associate($object);
 
             $data->save();
 
