@@ -30,7 +30,7 @@ class Store
      * @param null $target_id
      * @throws \Exception
      */
-    public function add($event_array, $actor_array, $object_array, $source_uid = null)
+    public function add($event_object, $actor_object, $object_object, $source_uid = null)
     {
 
         try {
@@ -38,34 +38,34 @@ class Store
             // Create the object or, if the UID already exists, retrieve it
 
             $object = StoreObject::firstOrCreate([
-                'object_uid' => isset($object_array->uid)?$object_array->uid:Hash::make($object_array->title),
+                'object_uid' => isset($object_object->uid)?$object_object->uid:Hash::make($object_object->title),
                 ], [
-                'object_type' => $object_array->type,
-                'object_title' => $object_array->title,
-                'object_content' => isset($object_array->content)?$object_array->content:null,
-                'object_metadata' => isset($object_array->metadata)?$object_array->metadata:null,
-                'object_url' => isset($object_array->url)?$object_array->url:null,
-                'object_image_path' => isset($object_array->image_path)?$object_array->image_path:null,
-                'object_time' => isset($object_array->time)?$object_array->time:Carbon::now()->toDateTimeString(),
+                'object_type' => $object_object->type,
+                'object_title' => $object_object->title,
+                'object_content' => isset($object_object->content)?$object_object->content:null,
+                'object_metadata' => isset($object_object->metadata)?$object_object->metadata:null,
+                'object_url' => isset($object_object->url)?$object_object->url:null,
+                'object_image_path' => isset($object_object->image_path)?$object_object->image_path:null,
+                'object_time' => isset($object_object->time)?$object_object->time:Carbon::now()->toDateTimeString(),
             ]);
             
             // Create or update the event
             
             $data = StoreEvent::updateOrCreate([
                 'source_uid' => is_null($source_uid)?Str::uuid():$source_uid,
-                'event_action' => $event_array->action,
-                'event_service' => $event_array->service,
+                'event_action' => $event_object->action,
+                'event_service' => $event_object->service,
                 ], [
-                'event_payload' => isset($event_array->payload)?$event_array->payload:null,
-                'event_metadata' => isset($event_array->metadata)?$event_array->metadata:null,
-                'event_time' => isset($event_array->time)?$event_array->time:Carbon::now()->toDateTimeString(),
-                'actor_id' => $actor_array->id,
-                'actor_metadata' => isset($actor_array->metadata)?$actor_array->metadata:null,
+                'event_payload' => isset($event_object->payload)?$event_object->payload:null,
+                'event_metadata' => isset($event_object->metadata)?$event_object->metadata:null,
+                'event_time' => isset($event_object->time)?$event_object->time:Carbon::now()->toDateTimeString(),
+                'actor_id' => $actor_object->id,
+                'actor_metadata' => isset($actor_object->metadata)?$actor_object->metadata:null,
             ]);
 
             // Check which table the event should be stored in
 
-            $data->setStream($event_array->action);
+            $data->setStream($event_object->action);
 
             if ($data->needsDedicatedStreamTableCreation()) {
                 $this->createStreamTable($data->getTable());
