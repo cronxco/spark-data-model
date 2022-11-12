@@ -29,7 +29,7 @@ class AddDataModelTable extends Migration
         });
 
         $schema->create(config('datamodel.events_table'), function (Blueprint $table) {
-            $table->bigIncrements('event_id')->primary();
+            $table->bigIncrements('event_id')->index();
             $table->string('source_uid')->index();
             $table->string('actor_id')->index();
             $table->longText('actor_metadata')->nullable();
