@@ -82,6 +82,37 @@ class Store
         }
     }
 
+    public function addObject($object_object)
+    {
+
+        try {
+            
+            // Create the object or, if the UID already exists, retrieve it
+
+            $object = StoreObject::updateOrCreate([
+                'object_uid' => isset($object_object->uid)?$object_object->uid:md5($object_object->type."-".$object_object->title),
+                ], [
+                'object_type' => $object_object->type,
+                'object_title' => $object_object->title,
+                'object_content' => isset($object_object->content)?$object_object->content:null,
+                'object_metadata' => isset($object_object->metadata)?$object_object->metadata:null,
+                'object_url' => isset($object_object->url)?$object_object->url:null,
+                'object_image_path' => isset($object_object->image_path)?$object_object->image_path:null,
+                'object_time' => isset($object_object->time)?$object_object->time:Carbon::now()->toDateTimeString(),
+            ]);
+
+            $object->save();
+
+            return $object;
+
+        } catch (\Exception $e) {
+            if ($this->withExceptions) {
+                throw $e;
+            }
+        }
+    }
+
+
     /**
      * Add multiple entries of the same event at once using a single query.
      * Disclaimer: this method does not fire any Eloquent model events.
