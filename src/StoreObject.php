@@ -44,9 +44,14 @@ class StoreObject extends Model
      */
     protected $dates = ['created_at', 'updated_at'];
 
-    public function events()
+    public function events_as_target()
     {
-        return $this->hasMany(StoreEvent::class, 'object_uid', 'object_uid');
+        return $this->hasMany(StoreEvent::class, 'target_uid', 'object_uid');
+    }
+
+    public function events_as_actor()
+    {
+        return $this->hasMany(StoreEvent::class, 'actor_uid', 'object_uid');
     }
 
     /**

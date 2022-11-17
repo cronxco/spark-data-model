@@ -31,17 +31,19 @@ class AddDataModelTable extends Migration
         $schema->create(config('datamodel.events_table'), function (Blueprint $table) {
             $table->bigIncrements('event_id')->index();
             $table->string('source_uid')->index();
-            $table->string('actor_id')->index();
+            $table->string('actor_uid')->nullable()->index();
             $table->json('actor_metadata')->nullable();
             $table->string('event_service')->index();
             $table->string('event_action')->index();
             $table->longText('event_payload')->nullable();
             $table->json('event_metadata')->nullable();
-            $table->string('object_uid')->nullable()->index();
+            $table->string('target_uid')->nullable()->index();
+            $table->json('target_metadata')->nullable();
             $table->timestamp('event_time')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))->index();
-            $table->foreign('object_uid')->references('object_uid')->on(config('datamodel.objects_table'));
+            $table->foreign('target_uid')->references('object_uid')->on(config('datamodel.objects_table'));
+            $table->foreign('actor_uid')->references('object_uid')->on(config('datamodel.objects_table'));
         });
 
     }

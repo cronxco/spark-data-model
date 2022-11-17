@@ -49,7 +49,12 @@ class StoreEvent extends Model
 
     public function object()
     {
-        return $this->belongsTo(StoreObject::class, 'object_uid', 'object_uid');
+        return $this->belongsTo(StoreObject::class, 'target_uid', 'object_uid');
+    }
+
+    public function actor()
+    {
+        return $this->belongsTo(StoreObject::class, 'actor_uid', 'object_uid');
     }
 
 

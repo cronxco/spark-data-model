@@ -30,23 +30,37 @@ class Store
      * @param null $target_id
      * @throws \Exception
      */
-    public function add($event_object, $actor_object, $object_object, $source_uid = null)
+    public function add($event_object, $actor_object, $target_object, $source_uid = null)
     {
 
         try {
             
-            // Create the object or, if the UID already exists, retrieve it
+            // Create the actor or, if the UID already exists, retrieve it
 
-            $object = StoreObject::firstOrCreate([
-                'object_uid' => isset($object_object->uid)?$object_object->uid:md5($object_object->type."-".$object_object->title),
+            $actor = StoreObject::firstOrCreate([
+                'object_uid' => isset($actor_object->uid)?$actor_object->uid:md5($actor_object->type."-".$actor_object->title),
                 ], [
-                'object_type' => $object_object->type,
-                'object_title' => $object_object->title,
-                'object_content' => isset($object_object->content)?$object_object->content:null,
-                'object_metadata' => isset($object_object->metadata)?$object_object->metadata:null,
-                'object_url' => isset($object_object->url)?$object_object->url:null,
-                'object_image_path' => isset($object_object->image_path)?$object_object->image_path:null,
-                'object_time' => isset($object_object->time)?$object_object->time:Carbon::now()->toDateTimeString(),
+                'object_type' => $actor_object->type,
+                'object_title' => $actor_object->title,
+                'object_content' => isset($actor_object->content)?$actor_object->content:null,
+                'object_metadata' => isset($actor_object->metadata)?$actor_object->metadata:null,
+                'object_url' => isset($actor_object->url)?$actor_object->url:null,
+                'object_image_path' => isset($actor_object->image_path)?$actor_object->image_path:null,
+                'object_time' => isset($actor_object->time)?$actor_object->time:Carbon::now()->toDateTimeString(),
+            ]);
+
+            // Create the target or, if the UID already exists, retrieve it
+
+            $target = StoreObject::firstOrCreate([
+                'object_uid' => isset($target_object->uid)?$target_object->uid:md5($target_object->type."-".$target_object->title),
+                ], [
+                'object_type' => $target_object->type,
+                'object_title' => $target_object->title,
+                'object_content' => isset($target_object->content)?$target_object->content:null,
+                'object_metadata' => isset($target_object->metadata)?$target_object->metadata:null,
+                'object_url' => isset($target_object->url)?$target_object->url:null,
+                'object_image_path' => isset($target_object->image_path)?$target_object->image_path:null,
+                'object_time' => isset($target_object->time)?$target_object->time:Carbon::now()->toDateTimeString(),
             ]);
             
             // Create or update the event
@@ -59,9 +73,8 @@ class Store
                 'event_payload' => isset($event_object->payload)?$event_object->payload:null,
                 'event_metadata' => isset($event_object->metadata)?$event_object->metadata:null,
                 'event_time' => isset($event_object->time)?$event_object->time:Carbon::now()->toDateTimeString(),
-                'actor_id' => $actor_object->id,
                 'actor_metadata' => isset($actor_object->metadata)?$actor_object->metadata:null,
-            ])->object()->associate($object);
+            ])->actor()->associate($actor)->target()->associate($target);
 
             // Check which table the event should be stored in
 
@@ -87,9 +100,9 @@ class Store
 
         try {
             
-            // Create the object or, if the UID already exists, retrieve it
+            // Create the target or, if the UID already exists, retrieve it
 
-            $object = StoreObject::updateOrCreate([
+            $target = StoreObject::updateOrCreate([
                 'object_uid' => isset($object_object->uid)?$object_object->uid:md5($object_object->type."-".$object_object->title),
                 ], [
                 'object_type' => $object_object->type,
