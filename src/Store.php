@@ -102,7 +102,7 @@ class Store
             
             // Create the target or, if the UID already exists, retrieve it
 
-            $target = StoreObject::updateOrCreate([
+            $object = StoreObject::updateOrCreate([
                 'object_uid' => isset($object_object->uid)?$object_object->uid:md5($object_object->type."-".$object_object->title),
                 ], [
                 'object_type' => $object_object->type,
