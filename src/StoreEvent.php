@@ -30,7 +30,7 @@ class StoreEvent extends Model
      */
     protected $guarded = [];
 
-    protected $with = ['object'];
+    protected $with = ['target', 'actor'];
 
     /**
      * @var array
