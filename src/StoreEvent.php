@@ -47,7 +47,7 @@ class StoreEvent extends Model
      */
     protected $dates = ['created_at'];
 
-    public function object()
+    public function target()
     {
         return $this->belongsTo(StoreObject::class, 'target_uid', 'object_uid');
     }
