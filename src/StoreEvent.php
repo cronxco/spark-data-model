@@ -59,7 +59,7 @@ class StoreEvent extends Model
 
     public function target_children()
     {
-        return $this->hasMany(StoreEvent::class, 'actor_uid', 'object_uid');
+        return $this->hasMany(StoreEvent::class, 'actor_uid', 'target_uid');
     }
 
 
