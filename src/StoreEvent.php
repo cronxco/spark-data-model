@@ -57,6 +57,11 @@ class StoreEvent extends Model
         return $this->belongsTo(StoreObject::class, 'actor_uid', 'object_uid');
     }
 
+    public function target_children()
+    {
+        return $this->hasMany(StoreEvent::class, 'actor_uid', 'object_uid');
+    }
+
 
     /**
      * @param $event
