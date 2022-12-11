@@ -95,7 +95,7 @@ class Store
         }
     }
 
-    public function addObjects($object_object)
+    public function addObject($object_object)
     {
 
         try {
