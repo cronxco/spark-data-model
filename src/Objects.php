@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Tags\HasTags;
 
-class StoreObject extends Model
+class Objects extends Model
 {
         use HasTags;
     
@@ -46,12 +46,22 @@ class StoreObject extends Model
 
     public function events_as_target()
     {
-        return $this->hasMany(StoreEvent::class, 'target_uid', 'object_uid');
+        return $this->hasMany(Events::class, 'target_uid', 'object_uid');
     }
 
     public function events_as_actor()
     {
-        return $this->hasMany(StoreEvent::class, 'actor_uid', 'object_uid');
+        return $this->hasMany(Events::class, 'actor_uid', 'object_uid');
+    }
+
+    public function limited_events_as_target()
+    {
+        return $this->hasMany(Events::class, 'target_uid', 'object_uid')->take(50);
+    }
+
+    public function limited_events_as_actor()
+    {
+        return $this->hasMany(Events::class, 'actor_uid', 'object_uid')->take(50);
     }
 
     /**

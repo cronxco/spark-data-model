@@ -17,7 +17,7 @@ class Store
     private $withExceptions;
 
     /**
-     * Event Store class constructor.
+     * Events Store class constructor.
      */
     public function __construct()
     {
@@ -37,7 +37,7 @@ class Store
             
             // Create the actor or, if the UID already exists, retrieve it
 
-            $actor = StoreObject::firstOrCreate([
+            $actor = Objects::firstOrCreate([
                 'object_uid' => isset($actor_object->uid)?$actor_object->uid:md5($actor_object->type."-".$actor_object->title),
                 ], [
                 'object_type' => $actor_object->type,
@@ -51,7 +51,7 @@ class Store
 
             // Create the target or, if the UID already exists, retrieve it
 
-            $target = StoreObject::firstOrCreate([
+            $target = Objects::firstOrCreate([
                 'object_uid' => isset($target_object->uid)?$target_object->uid:md5($target_object->type."-".$target_object->title),
                 ], [
                 'object_type' => $target_object->type,
@@ -65,7 +65,7 @@ class Store
             
             // Create or update the event
             
-            $data = StoreEvent::updateOrCreate([
+            $data = Events::updateOrCreate([
                 'source_uid' => is_null($source_uid)?Str::uuid():$source_uid,
                 'event_action' => $event_object->action,
                 'event_service' => $event_object->service,
@@ -95,14 +95,14 @@ class Store
         }
     }
 
-    public function addObject($object_object)
+    public function addObjects($object_object)
     {
 
         try {
             
             // Create the target or, if the UID already exists, retrieve it
 
-            $object = StoreObject::updateOrCreate([
+            $object = Objects::updateOrCreate([
                 'object_uid' => isset($object_object->uid)?$object_object->uid:md5($object_object->type."-".$object_object->title),
                 ], [
                 'object_type' => $object_object->type,
@@ -137,7 +137,7 @@ class Store
     public function addMany($event_action, array $events)
     {
         try {
-            $event = new StoreEvent();
+            $event = new Events();
             $event->setStream($event_action);
 
             if ($event->needsDedicatedStreamTableCreation()) {
@@ -160,13 +160,13 @@ class Store
     }
 
     /**
-     * Gets the StoreEvent model query Builder instance.
+     * Gets the Events model query Builder instance.
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query()
     {
-        return (new StoreEvent())->newQuery();
+        return (new Events())->newQuery();
     }
 
     /**
@@ -178,7 +178,7 @@ class Store
      */
     public function get($event = null)
     {
-        $query = new StoreEvent();
+        $query = new Events();
 
         if ($event) {
             $query->setStream($event);
@@ -196,7 +196,7 @@ class Store
      */
     public function stream($stream)
     {
-        $query = new StoreEvent();
+        $query = new Events();
         $query = $query->setTable($stream);
 
         return $query->newQuery();

@@ -3,7 +3,7 @@
 namespace Tests;
 
 use CronxCo\DataModel\Store;
-use CronxCo\DataModel\StoreEvent;
+use CronxCo\DataModel\Events;
 use CronxCo\DataModel\DataModelFacade as DataModel;
 
 class DataModelTest extends DataModelTestCase
@@ -42,7 +42,7 @@ class DataModelTest extends DataModelTestCase
     {
         $this->addDedicatedTablesToConfig();
 
-        $table = (new StoreEvent())->getStream('custom_event_1');
+        $table = (new Events())->getStream('custom_event_1');
         $this->assertEquals('custom_event_table', $table);
     }
 
@@ -51,7 +51,7 @@ class DataModelTest extends DataModelTestCase
     {
         $this->addDedicatedTablesToConfig();
 
-        $event = (new StoreEvent())->setStream('custom_event_1');
+        $event = (new Events())->setStream('custom_event_1');
         $this->assertEquals('custom_event_table', $event->getTable());
     }
 
@@ -69,7 +69,7 @@ class DataModelTest extends DataModelTestCase
     {
         DataModel::createStreamTable('custom_table');
 
-        $event = new StoreEvent();
+        $event = new Events();
         $event->setTable('custom_table');
 
         $this->assertFalse($event->needsDedicatedStreamTableCreation());
