@@ -56,12 +56,12 @@ class Objects extends Model
 
     public function limited_events_as_target()
     {
-        return $this->hasMany(Events::class, 'target_uid', 'object_uid')->take(50);
+        return $this->hasMany(Events::class, 'target_uid', 'object_uid')->limit(50);
     }
 
     public function limited_events_as_actor()
     {
-        return $this->hasMany(Events::class, 'actor_uid', 'object_uid')->take(50);
+        return $this->hasMany(Events::class, 'actor_uid', 'object_uid')->limit(50);
     }
 
     /**

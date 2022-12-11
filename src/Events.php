@@ -64,7 +64,7 @@ class Events extends Model
 
     public function limited_target_children()
     {
-        return $this->hasMany(Events::class, 'actor_uid', 'target_uid')->with('target','actor')->take(50);
+        return $this->hasMany(Events::class, 'actor_uid', 'target_uid')->with('target','actor')->limit(50);
     }
 
     /**
