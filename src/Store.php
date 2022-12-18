@@ -30,7 +30,7 @@ class Store
      * @param null $target_id
      * @throws \Exception
      */
-    public function add($event_object, $actor_object, $target_object, $source_uid = null)
+    public function add($event_object, $actor_object, $target_object, $source_uid = null, $tags = null)
     {
 
         try {
@@ -86,6 +86,13 @@ class Store
 
             $data->save();
 
+            if (!empty($tags)) {
+                foreach ($tags as $tag) {
+                    $target->attachTag($tag['name'], $tag['category']);
+                    $data->attachTag($tag['name'], $tag['category']);
+                }
+            }
+            
             return $data;
 
         } catch (\Exception $e) {
