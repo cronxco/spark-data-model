@@ -57,6 +57,7 @@ class DataModel
             $target = Objects::firstOrCreate([
                 'object_uid' => isset($target_object->uid)?$target_object->uid:md5($target_object->type."-".$target_object->title),
                 ], [
+                'object_concept' => $target_object->concept,
                 'object_type' => $target_object->type,
                 'object_title' => $target_object->title,
                 'object_content' => isset($target_object->content)?$target_object->content:null,
@@ -140,6 +141,7 @@ class DataModel
             $target = Objects::firstOrCreate([
                 'object_uid' => isset($target_object->uid)?$target_object->uid:md5($target_object->type."-".$target_object->title),
                 ], [
+                'object_concept' => $target_object->concept,
                 'object_type' => $target_object->type,
                 'object_title' => $target_object->title,
                 'object_content' => isset($target_object->content)?$target_object->content:null,
