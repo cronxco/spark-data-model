@@ -2,6 +2,8 @@
 
 Simple Data Model implementation package for Laravel using MySQL.
 
+![Actor -> EVENT -> Target](/docs/datamodel.png)
+
 ## Installation
 
 To start using this package, install it with composer:
