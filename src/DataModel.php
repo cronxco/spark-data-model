@@ -47,8 +47,8 @@ class DataModel
                 'object_content' => isset($actor_object->content)?$actor_object->content:null,
                 'object_metadata' => isset($actor_object->metadata)?$actor_object->metadata:null,
                 'object_url' => isset($actor_object->url)?$actor_object->url:null,
-                'object_image_url' => isset($actor_object->image_url?$actor_object->image_url:null,
-                'object_image_cache' => isset($actor_object->image_cache?$actor_object->image_cache:null,
+                'object_image_url' => isset($actor_object->image_url)?$actor_object->image_url:null,
+                'object_image_cache' => isset($actor_object->image_cache)?$actor_object->image_cache:null,
                 'object_time' => isset($actor_object->time)?$actor_object->time:Carbon::now()->toDateTimeString(),
             ]);
 
@@ -67,7 +67,7 @@ class DataModel
                 'object_time' => isset($target_object->time)?$target_object->time:Carbon::now()->toDateTimeString(),
             ]);
             
-            // Create or update the event
+            // Create or return the event
             
             $data = Events::firstOrCreate([
                 'source_uid' => is_null($source_uid)?Str::uuid():$source_uid,
@@ -203,7 +203,7 @@ class DataModel
             
             // Create the target or, if the UID already exists, retrieve it
 
-            $object = Objects::updateOrCreate([
+            $object = Objects::firstOrCreate([
                 'object_uid' => isset($object_object->uid)?$object_object->uid:md5($object_object->type."-".$object_object->title),
                 ], [
                 'object_concept' => $object_object->concept,
@@ -228,34 +228,36 @@ class DataModel
         }
     }
 
-
-
     /**
-     * Add multiple entries of the same event at once using a single query.
-     * Disclaimer: this method does not fire any Eloquent model events.
-     *
-     * @param       $event_action
-     * @param array $events
-     * @throws \Exception
+     * @param mixed $object_object
+     * 
+     * @return [type]
      */
-    public function addMany($event_action, array $events)
+    public function updateObject($object_object)
     {
+
         try {
-            $event = new Events();
-            $event->setStream($event_action);
+            
+            // Create the target or, if the UID already exists, update it
 
-            if ($event->needsDedicatedStreamTableCreation()) {
-                $this->createStreamTable($event->getTable());
-            }
+            $object = Objects::updateOrCreate([
+                'object_uid' => isset($object_object->uid)?$object_object->uid:md5($object_object->type."-".$object_object->title),
+                ], [
+                'object_concept' => $object_object->concept,
+                'object_type' => $object_object->type,
+                'object_title' => $object_object->title,
+                'object_content' => isset($object_object->content)?$object_object->content:null,
+                'object_metadata' => isset($object_object->metadata)?$object_object->metadata:null,
+                'object_url' => isset($object_object->url)?$object_object->url:null,
+                'object_image_url' => isset($object_object->image_url)?$object_object->image_url:null,
+                'object_image_cache' => isset($object_object->image_cache)?$object_object->image_cache:null,
+                'object_time' => isset($object_object->time)?$object_object->time:Carbon::now()->toDateTimeString(),
+            ]);
 
-            $events = array_map(function ($e) use ($event_action) {
-                return [
-                    'event_action' => $event_action,
-                    'event_value' => json_encode($e),
-                ];
-            }, $events);
+            $object->save();
 
-            $event->insert($events);
+            return $object;
+
         } catch (\Exception $e) {
             if ($this->withExceptions) {
                 throw $e;
