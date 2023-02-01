@@ -36,7 +36,7 @@ class Events extends Model
      * @var array
      */
     protected $casts = [
-        'event_payload' => 'array',
+        'event_value' => 'array',
         'actor_metadata' => 'array',
         'event_metadata' => 'array',
         'target_metadata' => 'array'

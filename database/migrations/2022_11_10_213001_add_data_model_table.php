@@ -23,7 +23,7 @@ class AddDataModelTable extends Migration
             $table->longText('object_content')->nullable();
             $table->json('object_metadata')->nullable();
             $table->string('object_url')->nullable();
-            $table->string('object_image_path', 2048)->nullable();
+            $table->string('object_image_url', 2048)->nullable();
             $table->string('object_image_cache', 2048)->nullable();
             $table->timestamp('object_time')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
@@ -35,8 +35,8 @@ class AddDataModelTable extends Migration
             $table->string('source_uid')->index();
             $table->string('actor_uid')->nullable()->index();
             $table->json('actor_metadata')->nullable();
-            $table->string('event_service')->index();
             $table->string('event_domain')->index();
+            $table->string('event_service')->index();
             $table->string('event_action')->index();
             $table->bigInteger('event_value')->nullable();
             $table->string('event_value_unit')->nullable();

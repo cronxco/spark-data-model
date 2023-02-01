@@ -27,7 +27,7 @@ class DataModel
     /**
      * 
      * @param      $event_action
-     * @param      $event_payload
+     * @param      $event_value
      * @param null $target_id
      * @throws \Exception
      */
@@ -41,12 +41,14 @@ class DataModel
             $actor = Objects::firstOrCreate([
                 'object_uid' => isset($actor_object->uid)?$actor_object->uid:md5($actor_object->type."-".$actor_object->title),
                 ], [
+                'object_concept' => $actor_object->concept,
                 'object_type' => $actor_object->type,
                 'object_title' => $actor_object->title,
                 'object_content' => isset($actor_object->content)?$actor_object->content:null,
                 'object_metadata' => isset($actor_object->metadata)?$actor_object->metadata:null,
                 'object_url' => isset($actor_object->url)?$actor_object->url:null,
-                'object_image_path' => isset($actor_object->image_path)?$actor_object->image_path:null,
+                'object_image_url' => isset($actor_object->image_url?$actor_object->image_url:null,
+                'object_image_cache' => isset($actor_object->image_cache?$actor_object->image_cache:null,
                 'object_time' => isset($actor_object->time)?$actor_object->time:Carbon::now()->toDateTimeString(),
             ]);
 
@@ -60,7 +62,8 @@ class DataModel
                 'object_content' => isset($target_object->content)?$target_object->content:null,
                 'object_metadata' => isset($target_object->metadata)?$target_object->metadata:null,
                 'object_url' => isset($target_object->url)?$target_object->url:null,
-                'object_image_path' => isset($target_object->image_path)?$target_object->image_path:null,
+                'object_image_url' => isset($target_object->image_url)?$target_object->image_url:null,
+                'object_image_cache' => isset($target_object->image_cache)?$target_object->image_cache:null,
                 'object_time' => isset($target_object->time)?$target_object->time:Carbon::now()->toDateTimeString(),
             ]);
             
@@ -71,7 +74,9 @@ class DataModel
                 'event_action' => $event_object->action,
                 'event_service' => $event_object->service,
                 ], [
-                'event_payload' => isset($event_object->payload)?$event_object->payload:null,
+                'event_domain' => $event_object->domain,
+                'event_value' => isset($event_object->value)?$event_object->value:null,
+                'event_value_unit' => isset($event_object->value_unit)?$event_object->value_unit:null,
                 'event_metadata' => isset($event_object->metadata)?$event_object->metadata:null,
                 'event_time' => isset($event_object->time)?$event_object->time:Carbon::now()->toDateTimeString(),
                 'actor_metadata' => isset($actor_object->metadata)?$actor_object->metadata:null,
@@ -105,7 +110,7 @@ class DataModel
 
     /**
      * @param      $event_action
-     * @param      $event_payload
+     * @param      $event_value
      * @param null $target_id
      * @throws \Exception
      */
@@ -119,12 +124,14 @@ class DataModel
             $actor = Objects::firstOrCreate([
                 'object_uid' => isset($actor_object->uid)?$actor_object->uid:md5($actor_object->type."-".$actor_object->title),
                 ], [
+                'object_concept' => $actor_object->concept,
                 'object_type' => $actor_object->type,
                 'object_title' => $actor_object->title,
                 'object_content' => isset($actor_object->content)?$actor_object->content:null,
                 'object_metadata' => isset($actor_object->metadata)?$actor_object->metadata:null,
                 'object_url' => isset($actor_object->url)?$actor_object->url:null,
-                'object_image_path' => isset($actor_object->image_path)?$actor_object->image_path:null,
+                'object_image_url' => isset($actor_object->image_url)?$actor_object->image_url:null,
+                'object_image_cache' => isset($actor_object->image_cache)?$actor_object->image_cache:null,
                 'object_time' => isset($actor_object->time)?$actor_object->time:Carbon::now()->toDateTimeString(),
             ]);
 
@@ -138,7 +145,8 @@ class DataModel
                 'object_content' => isset($target_object->content)?$target_object->content:null,
                 'object_metadata' => isset($target_object->metadata)?$target_object->metadata:null,
                 'object_url' => isset($target_object->url)?$target_object->url:null,
-                'object_image_path' => isset($target_object->image_path)?$target_object->image_path:null,
+                'object_image_url' => isset($target_object->image_url)?$target_object->image_url:null,
+                'object_image_cache' => isset($target_object->image_cache)?$target_object->image_cache:null,
                 'object_time' => isset($target_object->time)?$target_object->time:Carbon::now()->toDateTimeString(),
             ]);
             
@@ -149,7 +157,9 @@ class DataModel
                 'event_action' => $event_object->action,
                 'event_service' => $event_object->service,
                 ], [
-                'event_payload' => isset($event_object->payload)?$event_object->payload:null,
+                'event_domain' => $event_object->domain,
+                'event_value' => isset($event_object->value)?$event_object->value:null,
+                'event_value_unit' => isset($event_object->value_unit)?$event_object->value_unit:null,
                 'event_metadata' => isset($event_object->metadata)?$event_object->metadata:null,
                 'event_time' => isset($event_object->time)?$event_object->time:Carbon::now()->toDateTimeString(),
                 'actor_metadata' => isset($actor_object->metadata)?$actor_object->metadata:null,
@@ -196,12 +206,14 @@ class DataModel
             $object = Objects::updateOrCreate([
                 'object_uid' => isset($object_object->uid)?$object_object->uid:md5($object_object->type."-".$object_object->title),
                 ], [
+                'object_concept' => $object_object->concept,
                 'object_type' => $object_object->type,
                 'object_title' => $object_object->title,
                 'object_content' => isset($object_object->content)?$object_object->content:null,
                 'object_metadata' => isset($object_object->metadata)?$object_object->metadata:null,
                 'object_url' => isset($object_object->url)?$object_object->url:null,
-                'object_image_path' => isset($object_object->image_path)?$object_object->image_path:null,
+                'object_image_url' => isset($object_object->image_url)?$object_object->image_url:null,
+                'object_image_cache' => isset($object_object->image_cache)?$object_object->image_cache:null,
                 'object_time' => isset($object_object->time)?$object_object->time:Carbon::now()->toDateTimeString(),
             ]);
 
@@ -239,7 +251,7 @@ class DataModel
             $events = array_map(function ($e) use ($event_action) {
                 return [
                     'event_action' => $event_action,
-                    'event_payload' => json_encode($e),
+                    'event_value' => json_encode($e),
                 ];
             }, $events);
 
@@ -327,9 +339,11 @@ class DataModel
                 $builder->string('source_uid')->index();
                 $builder->string('actor_id')->index();
                 $builder->longText('actor_metadata')->nullable();
+                $builder->string('event_domain')->index();
                 $builder->string('event_service')->index();
                 $builder->string('event_action')->index();
-                $builder->longText('event_payload');
+                $builder->longText('event_value');
+                $builder->longText('event_value_unit');
                 $builder->longText('event_metadata')->nullable();
                 $builder->string('target_id')->index();
                 $builder->longText('target_metadata')->nullable();

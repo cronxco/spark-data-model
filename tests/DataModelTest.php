@@ -33,7 +33,7 @@ class DataModelTest extends DataModelTestCase
         DataModel::withExceptions()->add('some_event', ['key' => 'value']);
         $this->assertDatabaseHas('data_model', [
             'event_action' => 'some_event',
-            'event_payload' => json_encode(['key' => 'value']),
+            'event_value' => json_encode(['key' => 'value']),
         ]);
     }
 
@@ -83,7 +83,7 @@ class DataModelTest extends DataModelTestCase
         DataModel::withExceptions()->add('custom_event_1', ['key' => 'value']);
         $this->assertDatabaseHas('custom_event_table', [
             'event_action' => 'custom_event_1',
-            'event_payload' => json_encode(['key' => 'value']),
+            'event_value' => json_encode(['key' => 'value']),
         ]);
     }
 
@@ -98,7 +98,7 @@ class DataModelTest extends DataModelTestCase
 
         $this->assertDatabaseHas('data_model', [
             'event_action' => 'some_event',
-            'event_payload' => json_encode(['key' => 'baz']),
+            'event_value' => json_encode(['key' => 'baz']),
         ]);
     }
 
@@ -115,7 +115,7 @@ class DataModelTest extends DataModelTestCase
 
         $this->assertDatabaseHas('custom_event_table', [
             'event_action' => 'custom_event_1',
-            'event_payload' => json_encode(['key' => 'bar']),
+            'event_value' => json_encode(['key' => 'bar']),
         ]);
     }
 }
