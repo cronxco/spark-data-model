@@ -22,9 +22,17 @@ class Objects extends Model
      * @var bool
      */
     public $timestamps = false;
-
+    /**
+     * @var string
+     */
     public $primaryKey = 'object_uid';
+    /**
+     * @var string
+     */
     protected $keyType = 'string';
+    /**
+     * @var bool
+     */
     public $incrementing = false;
 
     /**
@@ -44,11 +52,17 @@ class Objects extends Model
      */
     protected $dates = ['created_at', 'updated_at'];
 
+    /**
+     * @return [type]
+     */
     public function events_as_target()
     {
         return $this->hasMany(Events::class, 'target_uid', 'object_uid');
     }
 
+    /**
+     * @return [type]
+     */
     public function events_as_actor()
     {
         return $this->hasMany(Events::class, 'actor_uid', 'object_uid');

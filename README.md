@@ -1,6 +1,6 @@
-# Spark Data Model
+# Cronx Data Model
 
-Simple DataModel implementation package for Laravel using MySQL.
+Simple Data Model implementation package for Laravel using MySQL.
 
 ## Installation
 
@@ -20,7 +20,7 @@ This package uses Laravel's package auto-discovery feature, so there is no need 
 
 ## Configuration
 
-Event Store logs are saved to your main database by default, but it is recommended to use a dedicated MySQL database for it. Once you create the database, make sure to set Event Store to use it:
+data model logs are saved to your main database by default, but it is recommended to use a dedicated MySQL database for it. Once you create the database, make sure to set data model to use it:
 
 First, add a dedicated connection to your `config/database.php` file:
 
@@ -62,9 +62,9 @@ DATA_MODEL_USERNAME="your_data_model_user_name"
 DATA_MODEL_PASSWORD="your_data_model_user_password"
 ```
 
-It is recommended to create a separate user for event store database, and remove UPDATE, DELETE, DROP permissions, to make sure your event store is append-only.
+It is recommended to create a separate user for the data model database, and remove UPDATE, DELETE, DROP permissions, to make sure your data model is append-only.
 
-Next, run the migration to create default event store table:
+Next, run the migration to create default data model table:
 
 ```
 php artisan migrate
@@ -91,35 +91,23 @@ the `add()` method accepts four arguments:
 - `$target_id`: _(optional)_ ID of target model in your database. E.g., for `email_sent` event, you can pass `user_id` as `$target_id`. This helps in the future when you wish to fetch all events related to a particular user.
 - `$before`: _(optional)_ array of values that were changed. E.g. for `user_updated` event, you may pass `$user->toArray()` to record attributes that were changed and their values before the change. _Note:_ the `add()` method automatically filters out only those keys that exist in `$event_payload` parameter to avoid unnecessary overhead.
 
-Sometimes, certain events occur much more frequently than others, e.g. `user_created` and `user_logged_in`. To help with query performance, you can separate certain events to their dedicated tables by changing the `streams` array in `config/DataModel.php` file:
-
-```php
-'streams' => [
-    'user_login_stream' => [
-        'user_logged_in',
-    ]
-]
-```
-
-This will automatically create a dedicated `user_login_stream` table in your event store database when you try to add `user_logged_in` event. All events that are not defined in this array will be saved in the default event store table.
-
 ## Extra methods
 
 ### query()
 
-Returns `Illuminate\Database\Eloquent\Builder` instance so you can perform any query on event store tables.
+Returns `Illuminate\Database\Eloquent\Builder` instance so you can perform any query on data model tables.
 
 ### get()
 
-Gets all events from the default event store table. Returns a collection.
+Gets all events from the default data model table. Returns a collection.
 
 ### get($event_name)
 
-Gets all events of specific type from event store table. Automatically determines which table to search in. Returns a collection.
+Gets all events of specific type from data model table. Automatically determines which table to search in. Returns a collection.
 
 ### stream($stream_name)
 
-Sets dedicated table and returns `Illuminate\Database\Eloquent\Builder` instance so you can perform any query on event store tables.
+Sets dedicated table and returns `Illuminate\Database\Eloquent\Builder` instance so you can perform any query on data model tables.
 
 ## Exception handling
 

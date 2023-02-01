@@ -20,7 +20,7 @@ class DataModelServiceProvider extends ServiceProvider
         $this->registerMigrations();
 
         $this->app->singleton('DataModel', function () {
-            return new Store;
+            return new DataModel;
         });
     }
 

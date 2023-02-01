@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use CronxCo\DataModel\Store;
+use CronxCo\DataModel\DataModel;
 use CronxCo\DataModel\Events;
 use CronxCo\DataModel\DataModelFacade as DataModel;
 
@@ -24,7 +24,7 @@ class DataModelTest extends DataModelTestCase
     /** @test */
     public function it_registers_helper_function()
     {
-        $this->assertInstanceOf(Store::class, DataModel());
+        $this->assertInstanceOf(DataModel::class, DataModel());
     }
 
     /** @test */

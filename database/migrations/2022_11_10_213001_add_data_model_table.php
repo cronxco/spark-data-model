@@ -17,12 +17,14 @@ class AddDataModelTable extends Migration
 
         $schema->create(config('datamodel.objects_table'), function (Blueprint $table) {
             $table->string('object_uid')->primary();
+            $table->string('object_concept')->index();
             $table->string('object_type')->index();
             $table->string('object_title')->index();
             $table->longText('object_content')->nullable();
             $table->json('object_metadata')->nullable();
             $table->string('object_url')->nullable();
             $table->string('object_image_path', 2048)->nullable();
+            $table->string('object_image_cache', 2048)->nullable();
             $table->timestamp('object_time')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))->index();
@@ -34,8 +36,10 @@ class AddDataModelTable extends Migration
             $table->string('actor_uid')->nullable()->index();
             $table->json('actor_metadata')->nullable();
             $table->string('event_service')->index();
+            $table->string('event_domain')->index();
             $table->string('event_action')->index();
-            $table->longText('event_payload')->nullable();
+            $table->bigInteger('event_value')->nullable();
+            $table->string('event_value_unit')->nullable();
             $table->json('event_metadata')->nullable();
             $table->string('target_uid')->nullable()->index();
             $table->json('target_metadata')->nullable();

@@ -9,7 +9,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 
-class Store
+class DataModel
 {
     /**
      * @var bool
@@ -17,11 +17,90 @@ class Store
     private $withExceptions;
 
     /**
-     * Events Store class constructor.
+     * Events DataModel class constructor.
      */
     public function __construct()
     {
         $this->withExceptions = config('datamodel.throw_exceptions');
+    }
+
+    /**
+     * 
+     * @param      $event_action
+     * @param      $event_payload
+     * @param null $target_id
+     * @throws \Exception
+     */
+    public function add($event_object, $actor_object, $target_object, $source_uid = null, $tags = null)
+    {
+
+        try {
+            
+            // Create the actor or, if the UID already exists, retrieve it
+
+            $actor = Objects::firstOrCreate([
+                'object_uid' => isset($actor_object->uid)?$actor_object->uid:md5($actor_object->type."-".$actor_object->title),
+                ], [
+                'object_type' => $actor_object->type,
+                'object_title' => $actor_object->title,
+                'object_content' => isset($actor_object->content)?$actor_object->content:null,
+                'object_metadata' => isset($actor_object->metadata)?$actor_object->metadata:null,
+                'object_url' => isset($actor_object->url)?$actor_object->url:null,
+                'object_image_path' => isset($actor_object->image_path)?$actor_object->image_path:null,
+                'object_time' => isset($actor_object->time)?$actor_object->time:Carbon::now()->toDateTimeString(),
+            ]);
+
+            // Create the target or, if the UID already exists, retrieve it
+
+            $target = Objects::firstOrCreate([
+                'object_uid' => isset($target_object->uid)?$target_object->uid:md5($target_object->type."-".$target_object->title),
+                ], [
+                'object_type' => $target_object->type,
+                'object_title' => $target_object->title,
+                'object_content' => isset($target_object->content)?$target_object->content:null,
+                'object_metadata' => isset($target_object->metadata)?$target_object->metadata:null,
+                'object_url' => isset($target_object->url)?$target_object->url:null,
+                'object_image_path' => isset($target_object->image_path)?$target_object->image_path:null,
+                'object_time' => isset($target_object->time)?$target_object->time:Carbon::now()->toDateTimeString(),
+            ]);
+            
+            // Create or update the event
+            
+            $data = Events::firstOrCreate([
+                'source_uid' => is_null($source_uid)?Str::uuid():$source_uid,
+                'event_action' => $event_object->action,
+                'event_service' => $event_object->service,
+                ], [
+                'event_payload' => isset($event_object->payload)?$event_object->payload:null,
+                'event_metadata' => isset($event_object->metadata)?$event_object->metadata:null,
+                'event_time' => isset($event_object->time)?$event_object->time:Carbon::now()->toDateTimeString(),
+                'actor_metadata' => isset($actor_object->metadata)?$actor_object->metadata:null,
+            ])->actor()->associate($actor)->target()->associate($target);
+
+            // Check which table the event should be stored in
+
+            $data->setStream($event_object->action);
+
+            if ($data->needsDedicatedStreamTableCreation()) {
+                $this->createStreamTable($data->getTable());
+            }
+
+            $data->save();
+
+            if (!empty($tags)) {
+                foreach ($tags as $tag) {
+                    $target->attachTag($tag['name'], $tag['category']);
+                    $data->attachTag($tag['name'], $tag['category']);
+                }
+            }
+            
+            return $data;
+
+        } catch (\Exception $e) {
+            if ($this->withExceptions) {
+                throw $e;
+            }
+        }
     }
 
     /**
@@ -30,7 +109,7 @@ class Store
      * @param null $target_id
      * @throws \Exception
      */
-    public function add($event_object, $actor_object, $target_object, $source_uid = null, $tags = null)
+    public function update($event_object, $actor_object, $target_object, $source_uid = null, $tags = null)
     {
 
         try {
@@ -102,6 +181,11 @@ class Store
         }
     }
 
+    /**
+     * @param mixed $object_object
+     * 
+     * @return [type]
+     */
     public function addObject($object_object)
     {
 
@@ -131,6 +215,7 @@ class Store
             }
         }
     }
+
 
 
     /**

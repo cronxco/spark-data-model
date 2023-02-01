@@ -8,7 +8,7 @@ use Spatie\Tags\HasTags;
 
 class Events extends Model
 {
-        use HasTags;
+    use HasTags;
     
     public function __construct(array $attributes = [])
     {
@@ -92,7 +92,7 @@ class Events extends Model
             }
         }
 
-        return config('DataModel.table');
+        return config('datamodel.table');
     }
 
     /**
