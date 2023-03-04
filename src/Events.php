@@ -9,6 +9,8 @@ use Spatie\Tags\HasTags;
 class Events extends Model
 {
     use HasTags;
+    use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
+
     
     public function __construct(array $attributes = [])
     {

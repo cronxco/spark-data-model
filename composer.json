@@ -12,7 +12,8 @@
     "php": "^8.0",
     "laravel/framework": "^8.67|^9.0|^10.0",
     "spatie/eloquent-sortable": "^3.10|^4.0",
-    "spatie/laravel-tags": "^4.0"
+    "spatie/laravel-tags": "^4.0",
+    "staudenmeir/eloquent-eager-limit": "^1.0"
   },
   "autoload": {
     "psr-4": {
@@ -36,8 +37,5 @@
         "DataModel": "CronxCo\\DataModel\\DataModelFacade"
       }
     }
-  },
-  "require-dev": {
-    "orchestra/testbench": "~3.5"
   }
 }

@@ -9,7 +9,9 @@ use Spatie\Tags\HasTags;
 class Objects extends Model
 {
         use HasTags;
-    
+        use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
+
+        
     public function __construct(array $attributes = [])
     {
         $this->setConnection(config('datamodel.connection'));
