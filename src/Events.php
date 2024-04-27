@@ -9,6 +9,7 @@ use Spatie\Tags\HasTags;
 class Events extends Model
 {
     use HasTags;
+    use HasSqid;
     use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
     
