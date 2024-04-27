@@ -5,6 +5,7 @@ namespace CronxCo\DataModel;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Tags\HasTags;
+use CronxCo\DataModel\HasSqid;
 
 class Events extends Model
 {
