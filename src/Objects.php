@@ -14,7 +14,6 @@ class Objects extends Model
 {
     use HasTags;
     use InteractsWithMedia;
-    use HasMedia;
     use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
 
