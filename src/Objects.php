@@ -10,7 +10,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Objects extends Model
+class Objects extends Model implements HasMedia
 {
     use HasTags;
     use InteractsWithMedia;
