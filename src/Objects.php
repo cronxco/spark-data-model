@@ -5,13 +5,18 @@ namespace CronxCo\DataModel;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Tags\HasTags;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Objects extends Model
 {
-        use HasTags;
-        use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
+    use HasTags;
+    use InteractsWithMedia;
+    use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
-        
+
     public function __construct(array $attributes = [])
     {
         $this->setConnection(config('datamodel.connection'));
@@ -83,5 +88,13 @@ class Objects extends Model
         $model->setTable($this->getTable());
 
         return $model;
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('preview')
+            ->fit(Fit::Contain, 300, 300)
+            ->nonQueued();
     }
 }
