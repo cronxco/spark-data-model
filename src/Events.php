@@ -53,12 +53,12 @@ class Events extends Model
 
     public function target()
     {
-        return $this->belongsTo(Objects::class, 'target_uid', 'object_uid');
+        return $this->belongsTo(Objects::class, 'target_uid', 'object_uid')->with('media');
     }
 
     public function actor()
     {
-        return $this->belongsTo(Objects::class, 'actor_uid', 'object_uid');
+        return $this->belongsTo(Objects::class, 'actor_uid', 'object_uid')->with('media');
     }
 
     public function target_children()
