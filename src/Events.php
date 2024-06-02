@@ -13,7 +13,7 @@ class Events extends Model
     use HasSqid;
     use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
-    
+
     public function __construct(array $attributes = [])
     {
         $this->setConnection(config('datamodel.connection'));
@@ -63,7 +63,7 @@ class Events extends Model
 
     public function target_children()
     {
-        return $this->hasMany(Events::class, 'actor_uid', 'target_uid')->with('target','actor');
+        return $this->hasMany(Events::class, 'actor_uid', 'target_uid')->with('target', 'actor', 'media');
     }
 
     /**
@@ -108,7 +108,7 @@ class Events extends Model
     public function needsDedicatedStreamTableCreation()
     {
         return $this->getTable() !== config('datamodel.events_table')
-            && ! Schema::connection(config('datamodel.connection'))->hasTable($this->getTable());
+            && !Schema::connection(config('datamodel.connection'))->hasTable($this->getTable());
     }
 
     /**
