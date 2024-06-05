@@ -63,7 +63,7 @@ class Events extends Model
 
     public function target_children()
     {
-        return $this->hasMany(Events::class, 'actor_uid', 'target_uid')->with('target', 'actor', 'media');
+        return $this->hasMany(Events::class, 'actor_uid', 'target_uid')->with('target', 'actor');
     }
 
     /**
