@@ -11,7 +11,6 @@ class Events extends Model
 {
     use HasTags;
     use HasSqid;
-    use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
 
     public function __construct(array $attributes = [])

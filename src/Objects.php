@@ -14,7 +14,6 @@ class Objects extends Model implements HasMedia
 {
     use HasTags;
     use InteractsWithMedia;
-    use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
 
     public function __construct(array $attributes = [])
