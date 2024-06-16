@@ -46,10 +46,9 @@ class AddDataModelTable extends Migration
             $table->timestamp('event_time')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))->index();
-            $table->foreign('target_uid')->references('object_uid')->on(config('datamodel.objects_table'));
-            $table->foreign('actor_uid')->references('object_uid')->on(config('datamodel.objects_table'));
+            $table->foreign('target_uid')->references('object_uid')->on(config('datamodel.objects_table'))->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('actor_uid')->references('object_uid')->on(config('datamodel.objects_table'))->onDelete('cascade')->onUpdate('cascade');
         });
-
     }
 
     /**
