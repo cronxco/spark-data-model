@@ -34,53 +34,65 @@ class DataModel
     public function add($event_object, $actor_object, $target_object, $source_uid = null, $tags = null)
     {
 
+        if (isset($event_object->value) && is_float($event_object->value)) {
+            $event_value = $event_object->value * 100;
+            $event_value_multiplier = 100;
+        } elseif (isset($event_object->value)) {
+            $event_value = $event_object->value;
+            $event_value_multiplier = null;
+        } else {
+            $event_value = null;
+            $event_value_multiplier = null;
+        }
+
         try {
-            
+
             // Create the actor or, if the UID already exists, retrieve it
 
             $actor = Objects::firstOrCreate([
-                'object_uid' => isset($actor_object->uid)?$actor_object->uid:md5($actor_object->type."-".$actor_object->title),
-                ], [
+                'object_uid' => isset($actor_object->uid) ? $actor_object->uid : md5($actor_object->type . "-" . $actor_object->title),
+            ], [
                 'object_concept' => $actor_object->concept,
                 'object_type' => $actor_object->type,
                 'object_title' => $actor_object->title,
-                'object_content' => isset($actor_object->content)?$actor_object->content:null,
-                'object_metadata' => isset($actor_object->metadata)?$actor_object->metadata:null,
-                'object_url' => isset($actor_object->url)?$actor_object->url:null,
-                'object_image_url' => isset($actor_object->image_url)?$actor_object->image_url:null,
-                'object_image_cache' => isset($actor_object->image_cache)?$actor_object->image_cache:null,
-                'object_time' => isset($actor_object->time)?$actor_object->time:Carbon::now()->toDateTimeString(),
+                'object_content' => isset($actor_object->content) ? $actor_object->content : null,
+                'object_metadata' => isset($actor_object->metadata) ? $actor_object->metadata : null,
+                'object_url' => isset($actor_object->url) ? $actor_object->url : null,
+                'object_image_url' => isset($actor_object->image_url) ? $actor_object->image_url : null,
+                'object_image_cache' => isset($actor_object->image_cache) ? $actor_object->image_cache : null,
+                'object_time' => isset($actor_object->time) ? $actor_object->time : Carbon::now()->toDateTimeString(),
             ]);
 
             // Create the target or, if the UID already exists, retrieve it
 
             $target = Objects::firstOrCreate([
-                'object_uid' => isset($target_object->uid)?$target_object->uid:md5($target_object->type."-".$target_object->title),
-                ], [
+                'object_uid' => isset($target_object->uid) ? $target_object->uid : md5($target_object->type . "-" . $target_object->title),
+            ], [
                 'object_concept' => $target_object->concept,
                 'object_type' => $target_object->type,
                 'object_title' => $target_object->title,
-                'object_content' => isset($target_object->content)?$target_object->content:null,
-                'object_metadata' => isset($target_object->metadata)?$target_object->metadata:null,
-                'object_url' => isset($target_object->url)?$target_object->url:null,
-                'object_image_url' => isset($target_object->image_url)?$target_object->image_url:null,
-                'object_image_cache' => isset($target_object->image_cache)?$target_object->image_cache:null,
-                'object_time' => isset($target_object->time)?$target_object->time:Carbon::now()->toDateTimeString(),
+                'object_content' => isset($target_object->content) ? $target_object->content : null,
+                'object_metadata' => isset($target_object->metadata) ? $target_object->metadata : null,
+                'object_url' => isset($target_object->url) ? $target_object->url : null,
+                'object_image_url' => isset($target_object->image_url) ? $target_object->image_url : null,
+                'object_image_cache' => isset($target_object->image_cache) ? $target_object->image_cache : null,
+                'object_time' => isset($target_object->time) ? $target_object->time : Carbon::now()->toDateTimeString(),
             ]);
-            
+
             // Create or return the event
-            
+
             $data = Events::firstOrCreate([
-                'source_uid' => is_null($source_uid)?Str::uuid():$source_uid,
+                'source_uid' => is_null($source_uid) ? Str::uuid() : $source_uid,
                 'event_action' => $event_object->action,
                 'event_service' => $event_object->service,
-                ], [
+            ], [
                 'event_domain' => $event_object->domain,
-                'event_value' => isset($event_object->value)?$event_object->value:null,
-                'event_value_unit' => isset($event_object->value_unit)?$event_object->value_unit:null,
-                'event_metadata' => isset($event_object->metadata)?$event_object->metadata:null,
-                'event_time' => isset($event_object->time)?$event_object->time:Carbon::now()->toDateTimeString(),
-                'actor_metadata' => isset($actor_object->metadata)?$actor_object->metadata:null,
+                'event_value' => $event_value,
+                'event_value_multiplier' => $event_value_multiplier,
+                'event_value_unit' => isset($event_object->value_unit) ? $event_object->value_unit : null,
+                'event_metadata' => isset($event_object->metadata) ? $event_object->metadata : null,
+                'event_time' => isset($event_object->time) ? $event_object->time : Carbon::now()->toDateTimeString(),
+                'actor_metadata' => isset($actor_object->metadata) ? $actor_object->metadata : null,
             ])->actor()->associate($actor)->target()->associate($target);
 
             // Check which table the event should be stored in
@@ -99,9 +111,8 @@ class DataModel
                     $data->attachTag($tag['name'], $tag['category']);
                 }
             }
-            
-            return $data;
 
+            return $data;
         } catch (\Exception $e) {
             if ($this->withExceptions) {
                 throw $e;
@@ -118,53 +129,65 @@ class DataModel
     public function update($event_object, $actor_object, $target_object, $source_uid = null, $tags = null)
     {
 
+        if (isset($event_object->value) && is_float($event_object->value)) {
+            $event_value = $event_object->value * 100;
+            $event_value_multiplier = 100;
+        } elseif (isset($event_object->value)) {
+            $event_value = $event_object->value;
+            $event_value_multiplier = null;
+        } else {
+            $event_value = null;
+            $event_value_multiplier = null;
+        }
+
         try {
-            
+
             // Create the actor or, if the UID already exists, retrieve it
 
             $actor = Objects::firstOrCreate([
-                'object_uid' => isset($actor_object->uid)?$actor_object->uid:md5($actor_object->type."-".$actor_object->title),
-                ], [
+                'object_uid' => isset($actor_object->uid) ? $actor_object->uid : md5($actor_object->type . "-" . $actor_object->title),
+            ], [
                 'object_concept' => $actor_object->concept,
                 'object_type' => $actor_object->type,
                 'object_title' => $actor_object->title,
-                'object_content' => isset($actor_object->content)?$actor_object->content:null,
-                'object_metadata' => isset($actor_object->metadata)?$actor_object->metadata:null,
-                'object_url' => isset($actor_object->url)?$actor_object->url:null,
-                'object_image_url' => isset($actor_object->image_url)?$actor_object->image_url:null,
-                'object_image_cache' => isset($actor_object->image_cache)?$actor_object->image_cache:null,
-                'object_time' => isset($actor_object->time)?$actor_object->time:Carbon::now()->toDateTimeString(),
+                'object_content' => isset($actor_object->content) ? $actor_object->content : null,
+                'object_metadata' => isset($actor_object->metadata) ? $actor_object->metadata : null,
+                'object_url' => isset($actor_object->url) ? $actor_object->url : null,
+                'object_image_url' => isset($actor_object->image_url) ? $actor_object->image_url : null,
+                'object_image_cache' => isset($actor_object->image_cache) ? $actor_object->image_cache : null,
+                'object_time' => isset($actor_object->time) ? $actor_object->time : Carbon::now()->toDateTimeString(),
             ]);
 
             // Create the target or, if the UID already exists, retrieve it
 
             $target = Objects::firstOrCreate([
-                'object_uid' => isset($target_object->uid)?$target_object->uid:md5($target_object->type."-".$target_object->title),
-                ], [
+                'object_uid' => isset($target_object->uid) ? $target_object->uid : md5($target_object->type . "-" . $target_object->title),
+            ], [
                 'object_concept' => $target_object->concept,
                 'object_type' => $target_object->type,
                 'object_title' => $target_object->title,
-                'object_content' => isset($target_object->content)?$target_object->content:null,
-                'object_metadata' => isset($target_object->metadata)?$target_object->metadata:null,
-                'object_url' => isset($target_object->url)?$target_object->url:null,
-                'object_image_url' => isset($target_object->image_url)?$target_object->image_url:null,
-                'object_image_cache' => isset($target_object->image_cache)?$target_object->image_cache:null,
-                'object_time' => isset($target_object->time)?$target_object->time:Carbon::now()->toDateTimeString(),
+                'object_content' => isset($target_object->content) ? $target_object->content : null,
+                'object_metadata' => isset($target_object->metadata) ? $target_object->metadata : null,
+                'object_url' => isset($target_object->url) ? $target_object->url : null,
+                'object_image_url' => isset($target_object->image_url) ? $target_object->image_url : null,
+                'object_image_cache' => isset($target_object->image_cache) ? $target_object->image_cache : null,
+                'object_time' => isset($target_object->time) ? $target_object->time : Carbon::now()->toDateTimeString(),
             ]);
-            
+
             // Create or update the event
-            
+
             $data = Events::updateOrCreate([
-                'source_uid' => is_null($source_uid)?Str::uuid():$source_uid,
+                'source_uid' => is_null($source_uid) ? Str::uuid() : $source_uid,
                 'event_action' => $event_object->action,
                 'event_service' => $event_object->service,
-                ], [
+            ], [
                 'event_domain' => $event_object->domain,
-                'event_value' => isset($event_object->value)?$event_object->value:null,
-                'event_value_unit' => isset($event_object->value_unit)?$event_object->value_unit:null,
-                'event_metadata' => isset($event_object->metadata)?$event_object->metadata:null,
-                'event_time' => isset($event_object->time)?$event_object->time:Carbon::now()->toDateTimeString(),
-                'actor_metadata' => isset($actor_object->metadata)?$actor_object->metadata:null,
+                'event_value' => $event_value,
+                'event_value_multiplier' => $event_value_multiplier,
+                'event_value_unit' => isset($event_object->value_unit) ? $event_object->value_unit : null,
+                'event_metadata' => isset($event_object->metadata) ? $event_object->metadata : null,
+                'event_time' => isset($event_object->time) ? $event_object->time : Carbon::now()->toDateTimeString(),
+                'actor_metadata' => isset($actor_object->metadata) ? $actor_object->metadata : null,
             ])->actor()->associate($actor)->target()->associate($target);
 
             // Check which table the event should be stored in
@@ -183,9 +206,8 @@ class DataModel
                     $data->attachTag($tag['name'], $tag['category']);
                 }
             }
-            
-            return $data;
 
+            return $data;
         } catch (\Exception $e) {
             if ($this->withExceptions) {
                 throw $e;
@@ -202,27 +224,26 @@ class DataModel
     {
 
         try {
-            
+
             // Create the target or, if the UID already exists, retrieve it
 
             $object = Objects::firstOrCreate([
-                'object_uid' => isset($object_object->uid)?$object_object->uid:md5($object_object->type."-".$object_object->title),
-                ], [
+                'object_uid' => isset($object_object->uid) ? $object_object->uid : md5($object_object->type . "-" . $object_object->title),
+            ], [
                 'object_concept' => $object_object->concept,
                 'object_type' => $object_object->type,
                 'object_title' => $object_object->title,
-                'object_content' => isset($object_object->content)?$object_object->content:null,
-                'object_metadata' => isset($object_object->metadata)?$object_object->metadata:null,
-                'object_url' => isset($object_object->url)?$object_object->url:null,
-                'object_image_url' => isset($object_object->image_url)?$object_object->image_url:null,
-                'object_image_cache' => isset($object_object->image_cache)?$object_object->image_cache:null,
-                'object_time' => isset($object_object->time)?$object_object->time:Carbon::now()->toDateTimeString(),
+                'object_content' => isset($object_object->content) ? $object_object->content : null,
+                'object_metadata' => isset($object_object->metadata) ? $object_object->metadata : null,
+                'object_url' => isset($object_object->url) ? $object_object->url : null,
+                'object_image_url' => isset($object_object->image_url) ? $object_object->image_url : null,
+                'object_image_cache' => isset($object_object->image_cache) ? $object_object->image_cache : null,
+                'object_time' => isset($object_object->time) ? $object_object->time : Carbon::now()->toDateTimeString(),
             ]);
 
             $object->save();
 
             return $object;
-
         } catch (\Exception $e) {
             if ($this->withExceptions) {
                 throw $e;
@@ -239,27 +260,26 @@ class DataModel
     {
 
         try {
-            
+
             // Create the target or, if the UID already exists, update it
 
             $object = Objects::updateOrCreate([
-                'object_uid' => isset($object_object->uid)?$object_object->uid:md5($object_object->type."-".$object_object->title),
-                ], [
+                'object_uid' => isset($object_object->uid) ? $object_object->uid : md5($object_object->type . "-" . $object_object->title),
+            ], [
                 'object_concept' => $object_object->concept,
                 'object_type' => $object_object->type,
                 'object_title' => $object_object->title,
-                'object_content' => isset($object_object->content)?$object_object->content:null,
-                'object_metadata' => isset($object_object->metadata)?$object_object->metadata:null,
-                'object_url' => isset($object_object->url)?$object_object->url:null,
-                'object_image_url' => isset($object_object->image_url)?$object_object->image_url:null,
-                'object_image_cache' => isset($object_object->image_cache)?$object_object->image_cache:null,
-                'object_time' => isset($object_object->time)?$object_object->time:Carbon::now()->toDateTimeString(),
+                'object_content' => isset($object_object->content) ? $object_object->content : null,
+                'object_metadata' => isset($object_object->metadata) ? $object_object->metadata : null,
+                'object_url' => isset($object_object->url) ? $object_object->url : null,
+                'object_image_url' => isset($object_object->image_url) ? $object_object->image_url : null,
+                'object_image_cache' => isset($object_object->image_cache) ? $object_object->image_cache : null,
+                'object_time' => isset($object_object->time) ? $object_object->time : Carbon::now()->toDateTimeString(),
             ]);
 
             $object->save();
 
             return $object;
-
         } catch (\Exception $e) {
             if ($this->withExceptions) {
                 throw $e;
@@ -354,7 +374,7 @@ class DataModel
                 $builder->timestamp('event_time')->index();
                 $builder->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
                 $builder->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))->index();
-                });
+            });
         });
     }
 }

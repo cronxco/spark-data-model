@@ -39,6 +39,7 @@ class AddDataModelTable extends Migration
             $table->string('event_service')->index();
             $table->string('event_action')->index();
             $table->bigInteger('event_value')->nullable();
+            $table->integer('event_value_multiplier')->nullable();
             $table->string('event_value_unit')->nullable();
             $table->json('event_metadata')->nullable();
             $table->string('target_uid')->nullable()->index();
