@@ -3,8 +3,10 @@
 namespace CronxCo\DataModel;
 
 use Illuminate\Support\Facades\Schema;
+use CronxCo\DataModel\Events;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Spatie\Tags\HasTags;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -15,7 +17,7 @@ class Objects extends Model implements HasMedia
 {
     use HasTags;
     use InteractsWithMedia;
-    use SoftDeletes;
+    use SoftDeletes, CascadeSoftDeletes;
 
 
     public function __construct(array $attributes = [])
@@ -59,6 +61,8 @@ class Objects extends Model implements HasMedia
      * @var array
      */
     protected $dates = ['object_time', 'created_at', 'updated_at', 'deleted_at'];
+
+    protected $cascadeDeletes = ['events_as_target', 'events_as_actor'];
 
     /**
      * @return [type]
