@@ -1,7 +1,7 @@
 {
     "timezone": "Europe/London",
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "includeForks": true,
+    "forkProcessing": "enabled",
     "configMigration": true,
     "extends": [
         "config:recommended",
