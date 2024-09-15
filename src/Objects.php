@@ -4,6 +4,7 @@ namespace CronxCo\DataModel;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Tags\HasTags;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -14,6 +15,7 @@ class Objects extends Model implements HasMedia
 {
     use HasTags;
     use InteractsWithMedia;
+    use SoftDeletes;
 
 
     public function __construct(array $attributes = [])
@@ -56,7 +58,7 @@ class Objects extends Model implements HasMedia
     /**
      * @var array
      */
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = ['object_time', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * @return [type]
