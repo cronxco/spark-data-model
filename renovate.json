@@ -1,0 +1,104 @@
+{
+    "timezone": "Europe/London",
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "configMigration": true,
+    "extends": [
+        "config:recommended",
+        "docker:pinDigests",
+        "helpers:pinGitHubActionDigests",
+        ":pinDevDependencies",
+        ":semanticCommits",
+        ":semanticCommitScopeDisabled",
+        ":skipStatusChecks"
+    ],
+    "ignoreDeps": [
+        "wire-elements/pro"
+    ],
+    "hostRules": [
+        {
+            "matchHost": "https://wire-elements-pro.composer.sh",
+            "hostType": "packagist",
+            "username": "will@cronx.co",
+            "password": "1a71815c-4b9e-4770-8e06-eb6571a4c714:Spark"
+        }
+    ],
+    "packageRules": [
+        {
+            "matchDatasources": [
+                "packagist"
+            ],
+            "registryUrls": [
+                "https://packagist.org"
+            ]
+        },
+        {
+            "semanticCommitType": ":arrow_up_small:",
+            "matchPackageNames": [
+                "*"
+            ]
+        },
+        {
+            "matchUpdateTypes": [
+                "lockFileMaintenance",
+                "pin",
+                "pinDigest"
+            ],
+            "semanticCommitType": ":pushpin:",
+            "automerge": true,
+            "labels": [
+                ":pushpin: dependencies",
+                ":twisted_rightwards_arrows: automerge"
+            ]
+        },
+        {
+            "matchUpdateTypes": [
+                "rollback"
+            ],
+            "semanticCommitType": ":arrow_down:"
+        },
+        {
+            "matchUpdateTypes": [
+                "bump"
+            ],
+            "semanticCommitType": ":bookmark:"
+        },
+        {
+            "matchUpdateTypes": [
+                "major"
+            ],
+            "semanticCommitType": ":arrow_up:",
+            "labels": [
+                ":boom: major"
+            ],
+            "dependencyDashboardApproval": true
+        },
+        {
+            "matchUpdateTypes": [
+                "minor"
+            ],
+            "labels": [
+                ":arrow_up_small: minor"
+            ]
+        },
+        {
+            "matchUpdateTypes": [
+                "patch"
+            ],
+            "labels": [
+                ":arrow_up_small: minor",
+                ":twisted_rightwards_arrows: automerge"
+            ],
+            "automerge": true
+        },
+        {
+            "matchUpdateTypes": [
+                "digest"
+            ],
+            "labels": [
+                ":arrow_up_small: minor",
+                ":twisted_rightwards_arrows: automerge"
+            ],
+            "automerge": true
+        }
+    ]
+}
