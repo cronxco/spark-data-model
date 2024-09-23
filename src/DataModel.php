@@ -49,7 +49,7 @@ class DataModel
 
             // Create the actor or, if the UID already exists, retrieve it
 
-            $actor = Objects::firstOrCreate([
+            $actor = Objects::withTrashed()->firstOrCreate([
                 'object_uid' => isset($actor_object->uid) ? $actor_object->uid : md5($actor_object->type . "-" . $actor_object->title),
             ], [
                 'object_concept' => $actor_object->concept,
@@ -65,7 +65,7 @@ class DataModel
 
             // Create the target or, if the UID already exists, retrieve it
 
-            $target = Objects::firstOrCreate([
+            $target = Objects::withTrashed()->firstOrCreate([
                 'object_uid' => isset($target_object->uid) ? $target_object->uid : md5($target_object->type . "-" . $target_object->title),
             ], [
                 'object_concept' => $target_object->concept,
@@ -81,7 +81,7 @@ class DataModel
 
             // Create or return the event
 
-            $data = Events::firstOrCreate([
+            $data = Events::withTrashed()->firstOrCreate([
                 'source_uid' => is_null($source_uid) ? Str::uuid() : $source_uid,
                 'event_action' => $event_object->action,
                 'event_service' => $event_object->service,
@@ -144,7 +144,7 @@ class DataModel
 
             // Create the actor or, if the UID already exists, retrieve it
 
-            $actor = Objects::firstOrCreate([
+            $actor = Objects::withTrashed()->firstOrCreate([
                 'object_uid' => isset($actor_object->uid) ? $actor_object->uid : md5($actor_object->type . "-" . $actor_object->title),
             ], [
                 'object_concept' => $actor_object->concept,
@@ -160,7 +160,7 @@ class DataModel
 
             // Create the target or, if the UID already exists, retrieve it
 
-            $target = Objects::firstOrCreate([
+            $target = Objects::withTrashed()->firstOrCreate([
                 'object_uid' => isset($target_object->uid) ? $target_object->uid : md5($target_object->type . "-" . $target_object->title),
             ], [
                 'object_concept' => $target_object->concept,
@@ -176,7 +176,7 @@ class DataModel
 
             // Create or update the event
 
-            $data = Events::updateOrCreate([
+            $data = Events::withTrashed()->updateOrCreate([
                 'source_uid' => is_null($source_uid) ? Str::uuid() : $source_uid,
                 'event_action' => $event_object->action,
                 'event_service' => $event_object->service,
@@ -227,7 +227,7 @@ class DataModel
 
             // Create the target or, if the UID already exists, retrieve it
 
-            $object = Objects::firstOrCreate([
+            $object = Objects::withTrashed()->firstOrCreate([
                 'object_uid' => isset($object_object->uid) ? $object_object->uid : md5($object_object->type . "-" . $object_object->title),
             ], [
                 'object_concept' => $object_object->concept,
@@ -263,7 +263,7 @@ class DataModel
 
             // Create the target or, if the UID already exists, update it
 
-            $object = Objects::updateOrCreate([
+            $object = Objects::withTrashed()->updateOrCreate([
                 'object_uid' => isset($object_object->uid) ? $object_object->uid : md5($object_object->type . "-" . $object_object->title),
             ], [
                 'object_concept' => $object_object->concept,
