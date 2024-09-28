@@ -82,9 +82,7 @@ class Events extends Model
             "actor_uid" => (string) $this->actor_uid,
             "actor_title" => (string) $this->actor->object_title,
             "target_uid" => (string) $this->target_uid,
-            "target_title" => (string) $this->target->object_title,
-            "created_at" => $this->created_at->timestamp,
-            "event_time" => $this->event_time->timestamp,
+            "target_title" => (string) $this->target->object_title
         ]);
     }
 

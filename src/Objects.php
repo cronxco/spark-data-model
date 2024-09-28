@@ -90,8 +90,7 @@ class Objects extends Model implements HasMedia
     public function toSearchableArray()
     {
         return array_merge($this->toArray(), [
-            "object_uid" => (string) $this->objet_uid,
-            "created_at" => $this->created_at->timestamp,
+            "object_uid" => (string) $this->objet_uid
         ]);
     }
     /**
