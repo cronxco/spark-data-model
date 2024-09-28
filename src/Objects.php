@@ -90,7 +90,10 @@ class Objects extends Model implements HasMedia
     {
         return array_merge($this->toArray(), [
             "id" => (string) $this->object_uid,
-            "object_uid" => (string) $this->object_uid
+            "object_uid" => (string) $this->object_uid,
+            "created_at" => $this->created_at->timestamp,
+            "updated_at" => $this->updated_at->timestamp,
+            "object_time" => $this->object_time->timestamp,
         ]);
     }
     /**
