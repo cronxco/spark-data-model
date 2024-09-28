@@ -39,20 +39,19 @@ class Events extends Model
 
     protected $with = ['target', 'actor'];
 
-    /**
-     * @var array
-     */
-    protected $casts = [
-        'event_value' => 'array',
-        'actor_metadata' => 'array',
-        'event_metadata' => 'array',
-        'target_metadata' => 'array'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $dates = ['event_time', 'created_at', 'updated_at', 'deleted_at'];
+    protected function casts(): array
+    {
+        return [
+            'event_value' => 'array',
+            'actor_metadata' => 'array',
+            'event_metadata' => 'array',
+            'target_metadata' => 'array',
+            'event_time' => 'datetime',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime'
+        ];
+    }
 
     public function target()
     {
@@ -82,7 +81,9 @@ class Events extends Model
             "actor_uid" => (string) $this->actor_uid,
             "actor_title" => (string) $this->actor->object_title,
             "target_uid" => (string) $this->target_uid,
-            "target_title" => (string) $this->target->object_title
+            "target_title" => (string) $this->target->object_title,
+            "created_at" => $this->created_at->timestamp,
+            "event_time" => $this->event_time->timestamp,
         ]);
     }
 

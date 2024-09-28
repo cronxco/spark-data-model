@@ -52,17 +52,16 @@ class Objects extends Model implements HasMedia
      */
     protected $guarded = [];
 
-    /**
-     * @var array
-     */
-    protected $casts = [
-        'object_metadata' => 'array'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $dates = ['object_time', 'created_at', 'updated_at', 'deleted_at'];
+    protected function casts(): array
+    {
+        return [
+            'object_metadata' => 'array',
+            'object_time' => 'datetime',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime'
+        ];
+    }
 
     protected $cascadeDeletes = ['events_as_target', 'events_as_actor'];
 
