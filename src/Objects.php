@@ -12,6 +12,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Laravel\Scout\Searchable;
 
 class Objects extends Model implements HasMedia
 {
@@ -80,6 +81,18 @@ class Objects extends Model implements HasMedia
         return $this->hasMany(Events::class, 'actor_uid', 'object_uid');
     }
 
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray()
+    {
+        return array_merge($this->toArray(), [
+            "object_uid" => (string) $this->objet_uid,
+            "created_at" => $this->created_at->timestamp,
+        ]);
+    }
     /**
      * Override default Eloquent Builder newInstance method.
      *

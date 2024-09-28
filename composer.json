@@ -15,7 +15,9 @@
     "spatie/laravel-tags": "^4.0",
     "sqids/sqids": "^0.4.1",
     "spatie/laravel-medialibrary": "^11.5",
-    "dyrynda/laravel-cascade-soft-deletes": "^4.4"
+    "dyrynda/laravel-cascade-soft-deletes": "^4.4",
+    "typesense/typesense-php": "^4.9",
+    "laravel/scout": "^10.11"
   },
   "autoload": {
     "psr-4": {
@@ -38,6 +40,11 @@
       "aliases": {
         "DataModel": "CronxCo\\DataModel\\DataModelFacade"
       }
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
     }
   }
 }

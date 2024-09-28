@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Tags\HasTags;
 use CronxCo\DataModel\HasSqid;
+use Laravel\Scout\Searchable;
 
 class Events extends Model
 {
@@ -65,6 +66,25 @@ class Events extends Model
     public function target_children()
     {
         return $this->hasMany(Events::class, 'actor_uid', 'target_uid')->with('target', 'actor');
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray()
+    {
+        return array_merge($this->toArray(), [
+            "id" => (string) $this->id,
+            "source_uid" => (string) $this->source_uid,
+            "actor_uid" => (string) $this->actor_uid,
+            "actor_title" => (string) $this->actor->object_title,
+            "target_uid" => (string) $this->target_uid,
+            "target_title" => (string) $this->target->object_title,
+            "created_at" => $this->created_at->timestamp,
+            "event_time" => $this->event_time->timestamp,
+        ]);
     }
 
     /**
