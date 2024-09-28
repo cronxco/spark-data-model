@@ -77,6 +77,7 @@ class Events extends Model
     {
         return array_merge($this->toArray(), [
             "id" => (string) $this->event_id,
+            "event_id" => (string) $this->event_id,
             "source_uid" => (string) $this->source_uid,
             "actor_uid" => (string) $this->actor_uid,
             "actor_title" => (string) $this->actor->object_title,
