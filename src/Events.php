@@ -14,6 +14,7 @@ class Events extends Model
     use HasTags;
     use HasSqid;
     use SoftDeletes;
+    use Searchable;
 
 
     public function __construct(array $attributes = [])

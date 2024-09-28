@@ -19,6 +19,7 @@ class Objects extends Model implements HasMedia
     use HasTags;
     use InteractsWithMedia;
     use SoftDeletes, CascadeSoftDeletes;
+    use Searchable;
 
 
     public function __construct(array $attributes = [])
