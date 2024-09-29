@@ -88,6 +88,7 @@ class Objects extends Model implements HasMedia
      */
     public function toSearchableArray()
     {
+        $tagArray = [];
         if (!empty($this->tags)) {
             foreach ($this->tags as $tag)
                 $tagArray[] = $tag->slug;

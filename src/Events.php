@@ -75,6 +75,7 @@ class Events extends Model
      */
     public function toSearchableArray()
     {
+        $tagArray = [];
         if (!empty($this->tags)) {
             foreach ($this->tags as $tag)
                 $tagArray[] = $tag->slug;
