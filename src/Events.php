@@ -75,6 +75,10 @@ class Events extends Model
      */
     public function toSearchableArray()
     {
+        if (!empty($this->tags)) {
+            foreach ($this->tags as $tag)
+                $tagArray[] = $tag->slug->en;
+        }
         return array_merge($this->toArray(), [
             "id" => (string) $this->event_id,
             "event_id" => (string) $this->event_id,
@@ -83,6 +87,7 @@ class Events extends Model
             "actor_title" => (string) $this->actor->object_title,
             "target_uid" => (string) $this->target_uid,
             "target_title" => (string) $this->target->object_title,
+            "tag_list" => (array) $tagArray,
             "created_at" => $this->created_at->timestamp,
             "updated_at" => $this->updated_at->timestamp,
             "event_time" => $this->event_time->timestamp,
