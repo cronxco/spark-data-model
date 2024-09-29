@@ -90,7 +90,7 @@ class Objects extends Model implements HasMedia
     {
         if (!empty($this->tags)) {
             foreach ($this->tags as $tag)
-                $tagArray[] = $tag->slug['en'];
+                $tagArray[] = $tag->slug;
         }
         return array_merge($this->toArray(), [
             "id" => (string) $this->object_uid,
