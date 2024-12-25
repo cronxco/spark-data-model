@@ -13,6 +13,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Laravel\Scout\Searchable;
+use LaracraftTech\LaravelUsefulAdditions\Traits\UsefulScopes;
 
 class Objects extends Model implements HasMedia
 {
@@ -20,6 +21,7 @@ class Objects extends Model implements HasMedia
     use InteractsWithMedia;
     use SoftDeletes, CascadeSoftDeletes;
     use Searchable;
+    use UsefulScopes;
 
 
     public function __construct(array $attributes = [])

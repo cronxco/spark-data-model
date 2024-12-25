@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Tags\HasTags;
 use CronxCo\DataModel\HasSqid;
 use Laravel\Scout\Searchable;
+use LaracraftTech\LaravelUsefulAdditions\Traits\UsefulScopes;
 
 class Events extends Model
 {
@@ -15,6 +16,7 @@ class Events extends Model
     use HasSqid;
     use SoftDeletes;
     use Searchable;
+    use UsefulScopes;
 
 
     public function __construct(array $attributes = [])
