@@ -15,14 +15,6 @@
     "ignoreDeps": [
         "wire-elements/pro"
     ],
-    "hostRules": [
-        {
-            "matchHost": "https://wire-elements-pro.composer.sh",
-            "hostType": "packagist",
-            "username": "will@cronx.co",
-            "password": "1a71815c-4b9e-4770-8e06-eb6571a4c714:Spark"
-        }
-    ],
     "packageRules": [
         {
             "matchDatasources": [
