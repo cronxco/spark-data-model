@@ -16,7 +16,7 @@
     "sqids/sqids": "^0.5.0",
     "spatie/laravel-medialibrary": "^11.5",
     "dyrynda/laravel-cascade-soft-deletes": "^4.4",
-    "typesense/typesense-php": "^4.9",
+    "typesense/typesense-php": "^5.0",
     "laravel/scout": "^10.11",
     "laracraft-tech/laravel-useful-additions": "^4.0"
   },
